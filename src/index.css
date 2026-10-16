@@ -10,6 +10,18 @@
   }
 }
 
+/* Mobile & touch ergonomics utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 0.75rem);
+}
+
 /* Custom Print Styles for 100% ATS-Compliant PDF generation */
 @media print {
   /* Hide all UI elements, navigation, modals, sidebars, and control panels */

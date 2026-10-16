@@ -47,17 +47,17 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-40 no-print shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
         {/* Brand & Target */}
-        <div className="flex items-center gap-3 sm:gap-6">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-blue-700 flex items-center justify-center text-white shadow-inner">
-              <FileText className="w-5 h-5 text-white" />
+        <div className="flex items-center gap-2 sm:gap-6 min-w-0">
+          <div className="flex items-center gap-2 shrink-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-blue-700 flex items-center justify-center text-white shadow-inner shrink-0">
+              <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-base tracking-tight text-white">Labor Path</span>
-                <span className="text-[10px] font-semibold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-1.5 py-0.2 rounded">
+                <span className="font-extrabold text-sm sm:text-base tracking-tight text-white whitespace-nowrap">Labor Path</span>
+                <span className="hidden min-[420px]:inline-block text-[10px] font-semibold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-1.5 py-0.2 rounded">
                   ATS Pro
                 </span>
               </div>
@@ -67,16 +67,28 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
 
-          {/* Target Position Pill */}
+          {/* Desktop Target Position Pill */}
           <button
             onClick={onOpenTargetModal}
             className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs text-slate-200 transition-colors group cursor-pointer"
             title="Haz clic para modificar la vacante objetivo"
           >
             <Target className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform" />
-            <span className="max-w-[200px] truncate font-medium">
+            <span className="max-w-[180px] lg:max-w-[220px] truncate font-medium">
               {currentTarget.title || 'Definir puesto objetivo'}
             </span>
+            <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${getScoreColor(overallScore)}`}>
+              {overallScore}%
+            </span>
+          </button>
+
+          {/* Mobile Target Badge Button */}
+          <button
+            onClick={onOpenTargetModal}
+            className="flex md:hidden items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs text-slate-200 transition-colors"
+            title="Modificar puesto objetivo"
+          >
+            <Target className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
             <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${getScoreColor(overallScore)}`}>
               {overallScore}%
             </span>
@@ -84,7 +96,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Right side controls */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           {/* Auto-save status */}
           <div className="hidden lg:flex items-center gap-1.5 text-xs text-slate-400 pr-2 border-r border-slate-700">
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -101,15 +113,16 @@ export const Header: React.FC<HeaderProps> = ({
                 setShowPresetsMenu(!showPresetsMenu);
                 setShowExportMenu(false);
               }}
-              className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-2 sm:px-2.5 py-1.5 h-8 rounded-lg bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 text-xs font-medium flex items-center gap-1 sm:gap-1.5 transition-colors cursor-pointer select-none"
+              title="Cargar perfiles de prueba"
             >
-              <FolderOpen className="w-3.5 h-3.5 text-blue-400" />
+              <FolderOpen className="w-3.5 h-3.5 text-blue-400 shrink-0" />
               <span className="hidden sm:inline">Ejemplos</span>
               <ChevronDown className="w-3 h-3 text-slate-400" />
             </button>
 
             {showPresetsMenu && (
-              <div className="absolute right-0 mt-2 w-64 bg-white text-slate-900 rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 animate-fade-in text-xs">
+              <div className="absolute right-0 mt-2 w-64 max-w-[calc(100vw-1.5rem)] bg-white text-slate-900 rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 animate-fade-in text-xs">
                 <div className="px-3 py-1.5 font-semibold text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100">
                   Cargar perfil empresarial de prueba:
                 </div>
@@ -120,14 +133,14 @@ export const Header: React.FC<HeaderProps> = ({
                       onSelectSample(sample.id);
                       setShowPresetsMenu(false);
                     }}
-                    className="w-full text-left px-3 py-2 hover:bg-blue-50 text-slate-700 hover:text-blue-900 transition-colors block"
+                    className="w-full text-left px-3 py-2.5 hover:bg-blue-50 text-slate-700 hover:text-blue-900 transition-colors block cursor-pointer"
                   >
                     <p className="font-semibold text-xs">{sample.roleTitle}</p>
                     <p className="text-[10px] text-slate-500 truncate">{sample.jobTarget.company}</p>
                   </button>
                 ))}
                 <div className="border-t border-slate-100 pt-1 mt-1 px-3">
-                  <label className="flex items-center gap-1.5 py-1 text-slate-600 hover:text-slate-900 cursor-pointer">
+                  <label className="flex items-center gap-1.5 py-2 text-slate-600 hover:text-slate-900 cursor-pointer">
                     <Code2 className="w-3.5 h-3.5 text-slate-400" />
                     <span>Importar Payload JSON...</span>
                     <input
@@ -146,14 +159,16 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Main Primary CTA: Descargar CV Optimizado (PDF) */}
-          <div className="relative inline-flex items-stretch h-8 rounded-lg shadow-xs">
+          <div className="relative inline-flex items-stretch h-8 rounded-lg shadow-xs shrink-0">
             <button
               onClick={exportToPDF}
-              className="h-full px-2.5 sm:px-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-l-lg flex items-center gap-1.5 transition-colors cursor-pointer select-none whitespace-nowrap"
+              className="h-full px-2 sm:px-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-l-lg flex items-center gap-1.5 transition-colors cursor-pointer select-none whitespace-nowrap"
               title="Descargar CV en formato PDF de columna única 100% optimizado para ATS"
             >
               <Printer className="w-3.5 h-3.5 shrink-0" />
-              <span>Descargar CV Optimizado</span>
+              <span>
+                Descargar <span className="hidden sm:inline">CV Optimizado</span><span className="sm:hidden">CV</span>
+              </span>
             </button>
 
             {/* Split dropdown for other formats */}
@@ -169,7 +184,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             {showExportMenu && (
-              <div className="absolute right-0 top-full mt-2 w-56 bg-white text-slate-900 rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 animate-fade-in text-xs">
+              <div className="absolute right-0 top-full mt-2 w-56 max-w-[calc(100vw-1.5rem)] bg-white text-slate-900 rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 animate-fade-in text-xs">
                 <div className="px-3 py-1.5 font-semibold text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100">
                   Formatos de Exportación ATS:
                 </div>

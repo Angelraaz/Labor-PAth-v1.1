@@ -41,14 +41,14 @@ export const TutorialCV: React.FC<TutorialCVProps> = ({ onGoToEditor }) => {
   return (
     <div className="space-y-6">
       {/* Top Hero Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-md border border-slate-800 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-md border border-slate-800 relative overflow-hidden">
         <div className="max-w-3xl space-y-3 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-semibold">
             <GraduationCap className="w-4 h-4 text-emerald-400" />
             <span>Guía de Ingeniería de Currículums Ejecutivos</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight">
             Cómo Crear un Currículum Perfecto para Superar los Filtros ATS
           </h2>
 
@@ -59,7 +59,7 @@ export const TutorialCV: React.FC<TutorialCVProps> = ({ onGoToEditor }) => {
           <div className="pt-2 flex flex-wrap items-center gap-3">
             <button
               onClick={onGoToEditor}
-              className="py-2 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl shadow-sm flex items-center gap-2 transition-all cursor-pointer"
+              className="py-2.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl shadow-sm flex items-center gap-2 transition-all cursor-pointer min-h-[42px]"
             >
               <span>Aplicar al Editor de Labor Path</span>
               <ArrowRight className="w-4 h-4" />
@@ -79,7 +79,7 @@ export const TutorialCV: React.FC<TutorialCVProps> = ({ onGoToEditor }) => {
               <button
                 key={t.id}
                 onClick={() => setActiveTopic(t.id as any)}
-                className={`py-2 px-3 sm:px-4 rounded-xl text-xs font-bold flex items-center gap-2 shrink-0 transition-all cursor-pointer ${
+                className={`py-2 px-3 sm:px-4 rounded-xl text-xs font-bold flex items-center gap-2 shrink-0 transition-all cursor-pointer min-h-[38px] ${
                   isActive
                     ? 'bg-blue-900 text-white shadow-xs'
                     : 'bg-white text-slate-700 hover:bg-slate-200 hover:text-slate-900 border border-slate-200'
@@ -93,7 +93,7 @@ export const TutorialCV: React.FC<TutorialCVProps> = ({ onGoToEditor }) => {
         </div>
 
         {/* Content Panel */}
-        <div className="p-6 sm:p-8 text-slate-800">
+        <div className="p-4 sm:p-6 md:p-8 text-slate-800">
           {/* TOPIC 1: ANATOMIA ATS */}
           {activeTopic === 'anatomy' && (
             <div className="space-y-6 animate-fade-in">

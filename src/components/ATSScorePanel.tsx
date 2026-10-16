@@ -84,24 +84,24 @@ export const ATSScorePanel: React.FC<ATSScorePanelProps> = ({
   const strokeDashoffset = circumference - (overallScore / 100) * circumference;
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden flex flex-col no-print sticky top-20">
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden flex flex-col no-print lg:sticky lg:top-20">
       {/* Top Header */}
-      <div className="bg-slate-900 px-5 py-4 text-white flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400">
+      <div className="bg-slate-900 px-4 sm:px-5 py-3 sm:py-4 text-white flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 shrink-0">
             <ShieldCheck className="w-5 h-5" />
           </div>
-          <div>
-            <h3 className="font-bold text-sm tracking-tight text-white">Panel de Control ATS en Tiempo Real</h3>
-            <p className="text-[11px] text-slate-300">
-              Evaluando compatibilidad contra: <span className="text-emerald-400 font-medium truncate max-w-[150px] inline-block align-bottom">{targetJobTitle}</span>
+          <div className="min-w-0">
+            <h3 className="font-bold text-sm tracking-tight text-white truncate">Diagnóstico ATS en Vivo</h3>
+            <p className="text-[11px] text-slate-300 truncate">
+              Contra: <span className="text-emerald-400 font-medium truncate max-w-[140px] sm:max-w-[200px] inline-block align-bottom">{targetJobTitle}</span>
             </p>
           </div>
         </div>
 
         <button
           onClick={onRunDeepAudit}
-          className="px-2.5 py-1 bg-blue-700 hover:bg-blue-600 text-white rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+          className="px-2.5 py-1.5 bg-blue-700 hover:bg-blue-600 text-white rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer shrink-0 min-h-[36px]"
           title="Ejecutar simulación exhaustiva de recruiter con Gemini"
         >
           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
@@ -110,8 +110,8 @@ export const ATSScorePanel: React.FC<ATSScorePanelProps> = ({
       </div>
 
       {/* Main Score Radial Gauge & Status */}
-      <div className="p-5 border-b border-slate-100 bg-gradient-to-b from-slate-50/70 to-white flex items-center gap-5">
-        <div className="relative w-28 h-28 shrink-0 flex items-center justify-center">
+      <div className="p-4 sm:p-5 border-b border-slate-100 bg-gradient-to-b from-slate-50/70 to-white flex flex-col sm:flex-row items-center text-center sm:text-left gap-4 sm:gap-5">
+        <div className="relative w-24 h-24 sm:w-28 sm:h-28 shrink-0 flex items-center justify-center">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 128 128">
             <circle
               cx="64"
@@ -143,14 +143,14 @@ export const ATSScorePanel: React.FC<ATSScorePanelProps> = ({
           </div>
         </div>
 
-        <div className="space-y-1.5 flex-1">
+        <div className="space-y-1.5 flex-1 w-full">
           <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-bold border ${profile.bg}`}>
             {profile.label}
           </span>
           <p className="text-xs text-slate-600 leading-snug">
             {profile.sub}
           </p>
-          <div className="flex items-center gap-3 text-[11px] text-slate-500 pt-1">
+          <div className="flex items-center justify-center sm:justify-start gap-3 text-[11px] text-slate-500 pt-1">
             <span>Palabras CV: <strong>{analysis.wordCount}</strong></span>
             <span>•</span>
             <span>Viñetas: <strong>{analysis.bulletCount}</strong></span>
@@ -159,7 +159,7 @@ export const ATSScorePanel: React.FC<ATSScorePanelProps> = ({
       </div>
 
       {/* 4 Score Breakdown Bars */}
-      <div className="p-5 bg-white space-y-3 border-b border-slate-100">
+      <div className="p-4 sm:p-5 bg-white space-y-3 border-b border-slate-100">
         <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
           Desglose Ponderado del Algoritmo:
         </span>
@@ -234,12 +234,12 @@ export const ATSScorePanel: React.FC<ATSScorePanelProps> = ({
       </div>
 
       {/* Tabs Selector */}
-      <div className="flex border-b border-slate-200 bg-slate-50 text-xs font-semibold text-slate-600">
+      <div className="flex overflow-x-auto no-scrollbar border-b border-slate-200 bg-slate-50 text-xs font-semibold text-slate-600 whitespace-nowrap">
         <button
           onClick={() => setActiveTab('keywords')}
-          className={`flex-1 py-2.5 text-center border-b-2 transition-colors cursor-pointer ${
+          className={`px-3 sm:px-4 py-2.5 text-center border-b-2 transition-colors cursor-pointer shrink-0 ${
             activeTab === 'keywords'
-              ? 'border-blue-900 text-blue-950 bg-white'
+              ? 'border-blue-900 text-blue-950 bg-white font-bold'
               : 'border-transparent hover:text-slate-900'
           }`}
         >
@@ -247,9 +247,9 @@ export const ATSScorePanel: React.FC<ATSScorePanelProps> = ({
         </button>
         <button
           onClick={() => setActiveTab('structure')}
-          className={`flex-1 py-2.5 text-center border-b-2 transition-colors cursor-pointer ${
+          className={`px-3 sm:px-4 py-2.5 text-center border-b-2 transition-colors cursor-pointer shrink-0 ${
             activeTab === 'structure'
-              ? 'border-blue-900 text-blue-950 bg-white'
+              ? 'border-blue-900 text-blue-950 bg-white font-bold'
               : 'border-transparent hover:text-slate-900'
           }`}
         >
@@ -257,9 +257,9 @@ export const ATSScorePanel: React.FC<ATSScorePanelProps> = ({
         </button>
         <button
           onClick={() => setActiveTab('tips')}
-          className={`flex-1 py-2.5 text-center border-b-2 transition-colors cursor-pointer ${
+          className={`px-3 sm:px-4 py-2.5 text-center border-b-2 transition-colors cursor-pointer shrink-0 ${
             activeTab === 'tips'
-              ? 'border-blue-900 text-blue-950 bg-white'
+              ? 'border-blue-900 text-blue-950 bg-white font-bold'
               : 'border-transparent hover:text-slate-900'
           }`}
         >

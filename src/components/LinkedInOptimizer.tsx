@@ -249,12 +249,12 @@ export const LinkedInOptimizer: React.FC<LinkedInOptimizerProps> = ({
       {/* Main LinkedIn Workspace */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap border-b border-slate-200 bg-slate-50 text-xs font-bold text-slate-600">
+        <div className="flex overflow-x-auto no-scrollbar border-b border-slate-200 bg-slate-50 text-xs font-bold text-slate-600 whitespace-nowrap">
           <button
             onClick={() => setActiveTab('headline')}
-            className={`flex-1 py-3 px-4 text-center border-b-2 flex items-center justify-center gap-2 transition-colors cursor-pointer ${
+            className={`px-3.5 sm:px-5 py-3 text-center border-b-2 flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0 ${
               activeTab === 'headline'
-                ? 'border-blue-900 text-blue-950 bg-white shadow-2xs'
+                ? 'border-blue-900 text-blue-950 bg-white shadow-2xs font-extrabold'
                 : 'border-transparent hover:text-slate-900'
             }`}
           >
@@ -264,9 +264,9 @@ export const LinkedInOptimizer: React.FC<LinkedInOptimizerProps> = ({
 
           <button
             onClick={() => setActiveTab('about')}
-            className={`flex-1 py-3 px-4 text-center border-b-2 flex items-center justify-center gap-2 transition-colors cursor-pointer ${
+            className={`px-3.5 sm:px-5 py-3 text-center border-b-2 flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0 ${
               activeTab === 'about'
-                ? 'border-blue-900 text-blue-950 bg-white shadow-2xs'
+                ? 'border-blue-900 text-blue-950 bg-white shadow-2xs font-extrabold'
                 : 'border-transparent hover:text-slate-900'
             }`}
           >
@@ -276,9 +276,9 @@ export const LinkedInOptimizer: React.FC<LinkedInOptimizerProps> = ({
 
           <button
             onClick={() => setActiveTab('experience')}
-            className={`flex-1 py-3 px-4 text-center border-b-2 flex items-center justify-center gap-2 transition-colors cursor-pointer ${
+            className={`px-3.5 sm:px-5 py-3 text-center border-b-2 flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0 ${
               activeTab === 'experience'
-                ? 'border-blue-900 text-blue-950 bg-white shadow-2xs'
+                ? 'border-blue-900 text-blue-950 bg-white shadow-2xs font-extrabold'
                 : 'border-transparent hover:text-slate-900'
             }`}
           >
@@ -288,9 +288,9 @@ export const LinkedInOptimizer: React.FC<LinkedInOptimizerProps> = ({
 
           <button
             onClick={() => setActiveTab('search')}
-            className={`flex-1 py-3 px-4 text-center border-b-2 flex items-center justify-center gap-2 transition-colors cursor-pointer ${
+            className={`px-3.5 sm:px-5 py-3 text-center border-b-2 flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0 ${
               activeTab === 'search'
-                ? 'border-blue-900 text-blue-950 bg-white shadow-2xs'
+                ? 'border-blue-900 text-blue-950 bg-white shadow-2xs font-extrabold'
                 : 'border-transparent hover:text-slate-900'
             }`}
           >
@@ -300,7 +300,7 @@ export const LinkedInOptimizer: React.FC<LinkedInOptimizerProps> = ({
         </div>
 
         {/* Content Area */}
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {/* Inspiration and Authenticity Banner */}
           <AIInspirationBanner className="mb-6" />
 

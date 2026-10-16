@@ -78,11 +78,11 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
   return (
     <div className="space-y-4">
       {/* Top Preview Controls Bar */}
-      <div className="bg-slate-900 text-white px-4 py-2.5 rounded-xl flex flex-wrap items-center justify-between gap-3 shadow-xs no-print">
+      <div className="bg-slate-900 text-white px-3 sm:px-4 py-2.5 rounded-xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3 shadow-xs no-print">
         <div className="flex items-center gap-2">
-          <FileText className="w-4 h-4 text-emerald-400" />
+          <FileText className="w-4 h-4 text-emerald-400 shrink-0" />
           <span className="text-xs font-bold uppercase tracking-wider text-slate-100">
-            Vista Previa del Documento (A4 Monocolumna ATS)
+            Vista Previa ATS (A4 Monocolumna)
           </span>
         </div>
 
@@ -91,49 +91,49 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
           <button
             type="button"
             onClick={() => setInspectMode(!inspectMode)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+            className={`flex-1 sm:flex-initial px-3 py-2 sm:py-1.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer min-h-[38px] ${
               inspectMode
                 ? 'bg-emerald-500 text-slate-950 shadow-xs'
                 : 'bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>{inspectMode ? 'Modo Inspección Activo' : 'Inspeccionar Palabras Clave'}</span>
+            <Sparkles className="w-3.5 h-3.5 shrink-0" />
+            <span className="whitespace-nowrap">{inspectMode ? 'Modo Inspección Activo' : 'Inspeccionar Palabras'}</span>
           </button>
 
           <button
             type="button"
             onClick={exportToPDF}
-            className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="flex-1 sm:flex-initial px-3 py-2 sm:py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer min-h-[38px] whitespace-nowrap"
           >
-            <Printer className="w-3.5 h-3.5" />
-            <span>Imprimir / Guardar PDF</span>
+            <Printer className="w-3.5 h-3.5 shrink-0" />
+            <span>Imprimir / PDF</span>
           </button>
         </div>
       </div>
 
       {inspectMode && (
-        <div className="p-2.5 bg-emerald-50 rounded-lg border border-emerald-200 text-xs text-emerald-900 flex items-center gap-4 no-print animate-fade-in">
+        <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200 text-xs text-emerald-900 flex flex-wrap items-center gap-2 sm:gap-4 no-print animate-fade-in">
           <span className="font-semibold flex items-center gap-1">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" /> Leyenda del Analizador ATS:
+            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" /> Leyenda ATS:
           </span>
-          <span className="inline-flex items-center gap-1 bg-emerald-200/80 px-2 py-0.5 rounded text-emerald-950 font-medium">
-            <span className="w-2 h-2 rounded-full bg-emerald-600" /> Palabra clave de la vacante
+          <span className="inline-flex items-center gap-1 bg-emerald-200/80 px-2 py-0.5 rounded text-emerald-950 font-medium text-[11px]">
+            <span className="w-2 h-2 rounded-full bg-emerald-600" /> Vacante
           </span>
-          <span className="inline-flex items-center gap-1 bg-blue-200/80 px-2 py-0.5 rounded text-blue-950 font-medium">
-            <span className="w-2 h-2 rounded-full bg-blue-600" /> Métrica cuantificable (%, $, núm)
+          <span className="inline-flex items-center gap-1 bg-blue-200/80 px-2 py-0.5 rounded text-blue-950 font-medium text-[11px]">
+            <span className="w-2 h-2 rounded-full bg-blue-600" /> Métrica num/%, $
           </span>
         </div>
       )}
 
       {/* Actual Printable ATS Resume Container */}
-      <div className="resume-printable-document bg-white border border-slate-300 rounded-xl shadow-lg p-8 sm:p-12 max-w-4xl mx-auto font-sans text-slate-900 leading-normal selection:bg-blue-100">
+      <div className="resume-printable-document bg-white border border-slate-300 rounded-xl shadow-lg p-4 sm:p-8 md:p-12 max-w-4xl mx-auto font-sans text-slate-900 leading-normal selection:bg-blue-100 overflow-x-auto w-full">
         {/* Header / Contact Info */}
         <div className="border-b-2 border-slate-900 pb-4 mb-5 text-center sm:text-left">
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-950 uppercase">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-slate-950 uppercase break-words">
             {cvData.contactInfo.fullName || 'TU NOMBRE COMPLETO'}
           </h1>
-          <p className="text-base font-bold text-slate-700 mt-1 uppercase tracking-wide">
+          <p className="text-sm sm:text-base font-bold text-slate-700 mt-1 uppercase tracking-wide">
             {cvData.contactInfo.professionalTitle || 'TÍTULO PROFESIONAL EJECUTIVO'}
           </p>
 
