@@ -5,7 +5,7 @@ export interface ContactInfo {
   phone: string;
   location: string;
   linkedin: string;
-  portfolioOrGithub: string;
+  portfolioOrGithub?: string;
 }
 
 export interface ExperienceItem {
@@ -181,11 +181,29 @@ export interface TextAuditIssue {
   explanation: string;
 }
 
+export interface TextAuditSectionBreakdown {
+  sectionName: string;
+  analyzedText: string;
+  status: 'impecable' | 'optimizado' | 'con_observaciones';
+  wordsCount: number;
+  observations: string;
+}
+
+export interface TextAuditStatistics {
+  wordsAudited: number;
+  sectionsAudited: number;
+  bulletPointsAudited: number;
+  formalityLevel: string;
+  orthographyStatus: string;
+}
+
 export interface TextAuditResult {
   healthScore: number;
   totalIssues: number;
   issues: TextAuditIssue[];
   generalFeedback: string;
+  statistics?: TextAuditStatistics;
+  inspectedSections?: TextAuditSectionBreakdown[];
 }
 
 

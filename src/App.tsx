@@ -14,7 +14,6 @@ import { DeepAuditModal } from './components/DeepAuditModal';
 import { ATSScorePanel } from './components/ATSScorePanel';
 import { ResumePreview } from './components/ResumePreview';
 import { LinkedInOptimizer } from './components/LinkedInOptimizer';
-import { TutorialCV } from './components/TutorialCV';
 import { TextAuditModal } from './components/TextAuditModal';
 import { ContactInfoForm } from './components/Editor/ContactInfoForm';
 import { SummaryEditor } from './components/Editor/SummaryEditor';
@@ -69,7 +68,7 @@ export default function App() {
 
   const [lastSaved, setLastSaved] = useState<Date>(new Date());
   const [activeStep, setActiveStep] = useState<number>(0);
-  const [viewMode, setViewMode] = useState<'editor' | 'preview' | 'linkedin' | 'tutorial'>('editor');
+  const [viewMode, setViewMode] = useState<'editor' | 'preview' | 'linkedin'>('editor');
 
   // Modals state
   const [isTargetModalOpen, setIsTargetModalOpen] = useState(false);
@@ -248,76 +247,67 @@ export default function App() {
         />
 
         {/* View Mode Switcher & Actions Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-6 no-print">
+        <div className="flex flex-wrap items-center justify-between gap-2.5 mb-6 no-print">
           {/* Editor vs Document Preview vs LinkedIn Optimizer Toggle */}
-          <div className="inline-flex p-1 rounded-xl bg-slate-200/80 border border-slate-300">
+          <div className="inline-flex p-1 rounded-xl bg-slate-200/80 border border-slate-300 max-w-full">
             <button
               onClick={() => setViewMode('editor')}
-              className={`px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
+              className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer ${
                 viewMode === 'editor'
                   ? 'bg-white text-slate-950 shadow-xs'
                   : 'text-slate-600 hover:text-slate-950'
               }`}
             >
-              <FileEdit className="w-4 h-4 text-blue-900" />
-              <span>Editor Guiado por Pasos</span>
+              <FileEdit className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-900" />
+              <span>Editor Guiado</span>
             </button>
             <button
               onClick={() => setViewMode('preview')}
-              className={`px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
+              className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer ${
                 viewMode === 'preview'
                   ? 'bg-white text-slate-950 shadow-xs'
                   : 'text-slate-600 hover:text-slate-950'
               }`}
             >
-              <Eye className="w-4 h-4 text-emerald-600" />
-              <span>Vista Previa del Documento ATS</span>
+              <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
+              <span>Vista Previa ATS</span>
             </button>
             <button
               onClick={() => setViewMode('linkedin')}
-              className={`px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
+              className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer ${
                 viewMode === 'linkedin'
                   ? 'bg-blue-900 text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-950'
               }`}
             >
-              <Sparkles className="w-4 h-4 text-amber-400" />
+              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
               <span>Optimizar LinkedIn</span>
-              <span className={`text-[10px] uppercase font-bold px-1.5 py-0.2 rounded ${
+              <span className={`text-[9px] uppercase font-bold px-1.5 py-0.2 rounded ${
                 viewMode === 'linkedin' ? 'bg-blue-800 text-blue-100' : 'bg-blue-100 text-blue-900'
               }`}>
                 Pro
               </span>
-            </button>
-            <button
-              onClick={() => setViewMode('tutorial')}
-              className={`px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
-                viewMode === 'tutorial'
-                  ? 'bg-blue-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-950'
-              }`}
-            >
-              <GraduationCap className="w-4 h-4 text-emerald-400" />
-              <span>Tutorial CV</span>
             </button>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={() => handleSelectSample(SAMPLE_PROFILES[0].id)}
-              className="px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
               title="Restablecer al perfil predeterminado"
             >
               <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
               <span className="hidden sm:inline">Restablecer Ejemplo</span>
+              <span className="sm:hidden">Restablecer</span>
             </button>
 
             <button
               onClick={exportToPDF}
-              className="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+              className="px-3 sm:px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
             >
-              <Printer className="w-4 h-4" />
-              <span>Descargar CV Optimizado</span>
+              <Printer className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Descargar CV Optimizado</span>
+              <span className="sm:hidden">Descargar</span>
             </button>
           </div>
         </div>
@@ -452,13 +442,11 @@ export default function App() {
                 matchedKeywords={atsAnalysis.matchedKeywords}
                 detectedMetrics={atsAnalysis.detectedMetrics}
               />
-            ) : viewMode === 'linkedin' ? (
+            ) : (
               <LinkedInOptimizer
                 cvData={cvData}
                 currentTarget={currentTarget}
               />
-            ) : (
-              <TutorialCV onGoToEditor={() => setViewMode('editor')} />
             )}
           </div>
 
@@ -477,7 +465,7 @@ export default function App() {
       {/* Footer */}
       <footer className="w-full border-t border-slate-200 bg-white py-4 px-4 text-center no-print mt-auto">
         <p className="text-xs text-slate-500 font-medium tracking-wide">
-          Hecho por Angel Raaz AJRC Servicios | Derechos reservados | Código abierto
+          AJRC Servicios | Derechos reservados | Versión 1.1 | Código abierto
         </p>
       </footer>
 
@@ -503,6 +491,7 @@ export default function App() {
         onClose={() => setIsTextAuditOpen(false)}
         auditResult={textAuditResult}
         loading={textAuditLoading}
+        cvData={cvData}
         onReScan={handleRunTextAudit}
         onApplySingleCorrection={handleApplySingleCorrection}
         onApplyAllCorrections={handleApplyAllCorrections}

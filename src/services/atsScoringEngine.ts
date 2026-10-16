@@ -1,12 +1,15 @@
 import { CVData, JobTarget, ATSAnalysisResult, KeywordMatch, MissingKeyword, DetectedMetric, StructuralViolation, ExtractedEntities } from '../types/ats';
 
-// Comprehensive dictionary of high-impact action verbs (ES & EN)
+// Comprehensive dictionary of high-impact action verbs (ES & EN) across multidisciplinary trades
 export const POWER_ACTION_VERBS = [
   // Spanish
   'diseñé', 'implementé', 'lideré', 'desarrollé', 'optimicé', 'reduje', 'incrementé', 'aumenté',
   'gestioné', 'coordiné', 'arquitecté', 'automaticé', 'escalé', 'transformé', 'reestructuré',
   'negocié', 'ejecuté', 'generé', 'supervisé', 'consolidé', 'analicé', 'resolví', 'capacité',
   'establecí', 'alcancé', 'superé', 'disminuí', 'ahorré', 'integré', 'administré', 'creé',
+  'confeccioné', 'reparé', 'diagnosticó', 'diagnostiqué', 'facturé', 'concilié', 'atendí',
+  'canalicé', 'calibré', 'ensamblé', 'patroné', 'inspeccioné', 'previne', 'ajusté', 'elaboré',
+  'prospecté', 'cerré', 'fidelicé', 'curé', 'monitoricé', 'tramité', 'operé',
   'diseñar', 'implementar', 'liderar', 'desarrollar', 'optimizar', 'reducir', 'incrementar',
   // English
   'spearheaded', 'engineered', 'architected', 'orchestrated', 'implemented', 'designed',
@@ -15,8 +18,23 @@ export const POWER_ACTION_VERBS = [
   'mentored', 'executed', 'built', 'resolved', 'championed', 'drove', 'saved', 'achieved'
 ];
 
-// Common technical and functional skill keywords across industries
+// Common technical, trade, and functional skill keywords across industries
 export const COMMON_SKILLS_DICTIONARY = [
+  // Administration & Accounting
+  'facturación', 'cfdi', 'sat', 'conciliaciones', 'cuentas por cobrar', 'cuentas por pagar',
+  'arqueo de caja', 'caja chica', 'aspel', 'contpaqi', 'archivo', 'control interno',
+  // Mechanics & Automotive Trade
+  'diagnóstico automotriz', 'obd-ii', 'motores', 'frenos', 'abs', 'suspensión', 'transmisión',
+  'afinación', 'alineación', 'balanceo', 'seguridad industrial', 'mantenimiento preventivo',
+  // Textile & Tailoring / Craft
+  'confección', 'patronaje', 'corte y confección', 'máquina recta', 'overlock', 'collareta',
+  'recubridora', 'telas', 'merma', 'escalado de tallas', 'costura industrial',
+  // Health & Nursing
+  'enfermería', 'triaje', 'signos vitales', 'canalización', 'vías venosas', 'medicamentos',
+  'bioseguridad', 'expediente clínico', 'curaciones', 'cuidados clínicos',
+  // Commercial & Sales
+  'ventas b2b', 'prospección', 'cierre de ventas', 'cotizaciones', 'crm', 'pipeline',
+  'cuotas de venta', 'fidelización', 'atención a clientes',
   // Tech & Software
   'javascript', 'typescript', 'react', 'next.js', 'node.js', 'python', 'java', 'c#', '.net', 'sql',
   'postgresql', 'mongodb', 'docker', 'kubernetes', 'aws', 'gcp', 'azure', 'ci/cd', 'git', 'github',
@@ -28,9 +46,6 @@ export const COMMON_SKILLS_DICTIONARY = [
   // Data & Analytics
   'excel', 'power bi', 'tableau', 'etl', 'pandas', 'numpy', 'machine learning', 'data analysis',
   'análisis de datos', 'business intelligence', 'big data', 'snowflake', 'spark', 'r', 'data modeling',
-  // Marketing & Sales
-  'seo', 'sem', 'google analytics', 'crm', 'salesforce', 'hubspot', 'inbound marketing', 'roi',
-  'conversion rate', 'tasa de conversión', 'cac', 'ltv', 'growth hacking', 'email marketing',
   // Finance & Operations
   'finanzas', 'estados financieros', 'sap', 'auditoría', 'pronósticos', 'cash flow', 'contabilidad',
   'compliance', 'gestión de riesgos', 'erp', 'cadena de suministro', 'supply chain'
