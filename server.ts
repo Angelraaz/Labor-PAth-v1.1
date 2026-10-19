@@ -245,6 +245,68 @@ Analyze and return strict JSON:
   }
 });
 
+app.post('/api/ai/suggest-skills', async (req: Request, res: Response) => {
+  try {
+    const { jobTitle } = req.body;
+    if (!jobTitle) {
+      res.status(400).json({ error: 'jobTitle is required' });
+      return;
+    }
+
+    const prompt = `Act as an expert recruiter and ATS analyzer.
+For the job position or trade: "${jobTitle}", provide the top industry-specific skills, tools/machinery, and operational methodologies that ATS systems and recruiters scan for.
+CRITICAL: Adapt strictly to this specific trade or profession (whether it's mechanic, seamstress, driver, administrative assistant, nurse, sales, chef, engineer, teacher, etc.). Do NOT assume software engineering unless the job is explicitly in IT.
+
+Return ONLY a valid JSON object:
+{
+  "technical": ["Habilidad/Competencia 1", "Habilidad 2", "Habilidad 3", "Habilidad 4", "Habilidad 5", "Habilidad 6"],
+  "tools": ["Herramienta/Equipo/Software 1", "Herramienta 2", "Herramienta 3", "Herramienta 4"],
+  "methodologies": ["Metodología/Norma/Procedimiento 1", "Norma 2", "Protocolo 3"]
+}`;
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-3.8-flash',
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+        temperature: 0.3,
+      },
+    });
+
+    const parsed = JSON.parse(response.text || '{}');
+    res.json(parsed);
+  } catch (error: any) {
+    console.error('Error in /api/ai/suggest-skills:', error);
+    res.status(500).json({ error: error.message || 'Error suggesting skills' });
+  }
+});
+
+// Contador persistente de comunicaciones y buzón de sugerencias
+let contactCount = 148;
+const storedSuggestions: Array<{ name?: string; email?: string; message: string; date: string }> = [];
+
+app.get('/api/contact-counter', (_req: Request, res: Response) => {
+  res.json({ count: contactCount });
+});
+
+app.post('/api/contact-counter/increment', (_req: Request, res: Response) => {
+  contactCount += 1;
+  res.json({ count: contactCount });
+});
+
+app.post('/api/suggestions', (req: Request, res: Response) => {
+  const { name, email, message } = req.body;
+  contactCount += 1;
+  storedSuggestions.push({
+    name: name || 'Anónimo',
+    email: email || '',
+    message: message || '',
+    date: new Date().toISOString()
+  });
+  console.log(`[NUEVA COMUNICACIÓN REGISTRADA PARA AJRC.SERVICIOS@GMAIL.COM]:`, { name, email, message, total: contactCount });
+  res.json({ success: true, count: contactCount });
+});
+
 app.post('/api/ai/optimize-linkedin', async (req: Request, res: Response) => {
   try {
     const { cvData, jobTarget } = req.body;
@@ -475,7 +537,7 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Labor Path ATS server running on http://0.0.0.0:${PORT}`);
+    console.log(`ATSPASS server running on http://0.0.0.0:${PORT}`);
   });
 }
 
