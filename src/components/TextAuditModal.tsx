@@ -109,8 +109,8 @@ export const TextAuditModal: React.FC<TextAuditModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-2 sm:p-4 no-print animate-fade-in">
-      <div className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-xs p-2 sm:p-4 no-print animate-fade-in">
+      <div className="relative w-full max-w-3xl bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[92vh]">
         {/* Header */}
         <div className="bg-slate-900 px-4 sm:px-6 py-3.5 text-white flex items-center justify-between border-b border-slate-800">
           <div className="flex items-center gap-2.5 sm:gap-3">
@@ -141,16 +141,16 @@ export const TextAuditModal: React.FC<TextAuditModalProps> = ({
 
         {/* Top Summary Banner */}
         {auditResult && !loading && (
-          <div className="bg-slate-50 border-b border-slate-200 px-4 sm:px-6 py-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <div className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 py-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-full bg-blue-100 border-2 border-blue-300 flex items-center justify-center font-black text-blue-950 text-sm shrink-0">
+              <div className="w-11 h-11 rounded-full bg-blue-100 dark:bg-blue-950/80 border-2 border-blue-300 dark:border-blue-700 flex items-center justify-center font-black text-blue-950 dark:text-blue-300 text-sm shrink-0">
                 {auditResult.healthScore}%
               </div>
               <div>
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
+                <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
                   Salud Lingüística del Currículum
                 </span>
-                <span className="text-xs font-bold text-slate-800">
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-100">
                   {auditResult.issues.length === 0
                     ? '100% de cumplimiento lingüístico verificado'
                     : `${auditResult.issues.length} observación(es) identificada(s)`}
@@ -162,9 +162,9 @@ export const TextAuditModal: React.FC<TextAuditModalProps> = ({
               <button
                 type="button"
                 onClick={onReScan}
-                className="px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
+                <RefreshCw className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
                 <span>Volver a Escanear</span>
               </button>
 
@@ -184,36 +184,36 @@ export const TextAuditModal: React.FC<TextAuditModalProps> = ({
 
         {/* Diagnostic Metrics Strip */}
         {auditResult && !loading && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 px-4 sm:px-6 py-2.5 bg-white border-b border-slate-100 text-xs">
-            <div className="p-2 rounded-lg bg-slate-50 border border-slate-200">
-              <span className="text-[10px] font-medium text-slate-500 block">Palabras Auditadas</span>
-              <span className="font-bold text-slate-900">{stats.wordsAudited} palabras</span>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 px-4 sm:px-6 py-2.5 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 text-xs">
+            <div className="p-2 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 block">Palabras Auditadas</span>
+              <span className="font-bold text-slate-900 dark:text-white">{stats.wordsAudited} palabras</span>
             </div>
-            <div className="p-2 rounded-lg bg-slate-50 border border-slate-200">
-              <span className="text-[10px] font-medium text-slate-500 block">Secciones Analizadas</span>
-              <span className="font-bold text-slate-900">{stats.sectionsAudited} secciones clave</span>
+            <div className="p-2 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 block">Secciones Analizadas</span>
+              <span className="font-bold text-slate-900 dark:text-white">{stats.sectionsAudited} secciones clave</span>
             </div>
-            <div className="p-2 rounded-lg bg-slate-50 border border-slate-200">
-              <span className="text-[10px] font-medium text-slate-500 block">Viñetas Verificadas</span>
-              <span className="font-bold text-slate-900">{stats.bulletPointsAudited} logros</span>
+            <div className="p-2 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 block">Viñetas Verificadas</span>
+              <span className="font-bold text-slate-900 dark:text-white">{stats.bulletPointsAudited} logros</span>
             </div>
-            <div className="p-2 rounded-lg bg-slate-50 border border-slate-200">
-              <span className="text-[10px] font-medium text-slate-500 block">Tono y Formalidad</span>
-              <span className="font-bold text-blue-900 truncate block">{stats.formalityLevel}</span>
+            <div className="p-2 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 block">Tono y Formalidad</span>
+              <span className="font-bold text-blue-900 dark:text-blue-400 truncate block">{stats.formalityLevel}</span>
             </div>
           </div>
         )}
 
         {/* View Mode Tabs (Observaciones vs Desglose de Contenido Auditado) */}
         {auditResult && !loading && (
-          <div className="px-4 sm:px-6 py-1.5 bg-slate-100 border-b border-slate-200 flex items-center justify-between text-xs">
+          <div className="px-4 sm:px-6 py-1.5 bg-slate-100 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setActiveTab('issues')}
                 className={`px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                   activeTab === 'issues'
-                    ? 'bg-white text-slate-950 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-white dark:bg-slate-800 text-slate-950 dark:text-white shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
@@ -224,8 +224,8 @@ export const TextAuditModal: React.FC<TextAuditModalProps> = ({
                 onClick={() => setActiveTab('breakdown')}
                 className={`px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                   activeTab === 'breakdown'
-                    ? 'bg-white text-slate-950 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-white dark:bg-slate-800 text-slate-950 dark:text-white shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 <FileCheck2 className="w-3.5 h-3.5 text-emerald-600" />

@@ -11,9 +11,7 @@ import { Header } from './components/Header';
 import { WelcomeBanner } from './components/WelcomeBanner';
 import { JobTargetModal } from './components/JobTargetModal';
 import { DeepAuditModal } from './components/DeepAuditModal';
-import { ATSScorePanel } from './components/ATSScorePanel';
 import { ResumePreview } from './components/ResumePreview';
-import { LinkedInOptimizer } from './components/LinkedInOptimizer';
 import { TextAuditModal } from './components/TextAuditModal';
 import { ContactInfoForm } from './components/Editor/ContactInfoForm';
 import { SummaryEditor } from './components/Editor/SummaryEditor';
@@ -32,23 +30,48 @@ import {
   FileEdit,
   Printer,
   Sparkles,
-  RotateCcw,
-  ShieldCheck,
-  Check,
-  SpellCheck
+  SpellCheck,
+  Mail
 } from 'lucide-react';
 import { exportToPDF } from './services/exportService';
 
-const STORAGE_KEY_CV = 'laborpath_cv_v1';
-const STORAGE_KEY_TARGET = 'laborpath_target_v1';
+const STORAGE_KEY_CV = 'atspass_cv_v1';
+const STORAGE_KEY_TARGET = 'atspass_target_v1';
+const THEME_STORAGE_KEY = 'atspass_theme';
 
 export default function App() {
-  // Load initial data from localStorage or default to Sample Profile 1 (Tech Lead / Full Stack)
   const defaultSample = SAMPLE_PROFILES[0];
+
+  // Theme Mode (Claro / Oscuro)
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem(THEME_STORAGE_KEY);
+      if (saved) return saved === 'dark';
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } catch (e) {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      if (isDarkMode) {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem(THEME_STORAGE_KEY, 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem(THEME_STORAGE_KEY, 'light');
+      }
+    } catch (e) {
+      console.warn('Failed to save theme preference:', e);
+    }
+  }, [isDarkMode]);
+
+  const toggleTheme = () => setIsDarkMode((prev) => !prev);
 
   const [cvData, setCvData] = useState<CVData>(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY_CV);
+      const saved = localStorage.getItem(STORAGE_KEY_CV) || localStorage.getItem('laborpath_cv_v1');
       if (saved) return JSON.parse(saved);
     } catch (e) {
       console.warn('Could not read from localStorage:', e);
@@ -58,7 +81,7 @@ export default function App() {
 
   const [currentTarget, setCurrentTarget] = useState<JobTarget>(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY_TARGET);
+      const saved = localStorage.getItem(STORAGE_KEY_TARGET) || localStorage.getItem('laborpath_target_v1');
       if (saved) return JSON.parse(saved);
     } catch (e) {
       console.warn('Could not read from localStorage:', e);
@@ -68,7 +91,7 @@ export default function App() {
 
   const [lastSaved, setLastSaved] = useState<Date>(new Date());
   const [activeStep, setActiveStep] = useState<number>(0);
-  const [viewMode, setViewMode] = useState<'editor' | 'preview' | 'linkedin'>('editor');
+  const [viewMode, setViewMode] = useState<'editor' | 'preview'>('editor');
 
   // Modals state
   const [isTargetModalOpen, setIsTargetModalOpen] = useState(false);
@@ -76,7 +99,7 @@ export default function App() {
   const [deepAuditLoading, setDeepAuditLoading] = useState(false);
   const [deepAuditResult, setDeepAuditResult] = useState<DeepAIAuditResult | null>(null);
 
-  // Text Audit (Spelling & Style) state
+  // Text Audit (Spelling, Grammar & ATS Structure) state
   const [isTextAuditOpen, setIsTextAuditOpen] = useState(false);
   const [textAuditLoading, setTextAuditLoading] = useState(false);
   const [textAuditResult, setTextAuditResult] = useState<TextAuditResult | null>(null);
@@ -106,16 +129,6 @@ export default function App() {
     return calculateATSScore(cvData, currentTarget);
   }, [cvData, currentTarget]);
 
-  // Handle switching preset profile
-  const handleSelectSample = (sampleId: string) => {
-    const sample = SAMPLE_PROFILES.find((s) => s.id === sampleId);
-    if (sample) {
-      setCvData(sample.cvData);
-      setCurrentTarget(sample.jobTarget);
-      setActiveStep(0);
-    }
-  };
-
   // Add missing keyword directly to Skills
   const handleAddMissingKeyword = (kw: MissingKeyword) => {
     const targetCat = kw.category === 'tools' ? 'tools' : kw.category === 'methodology' ? 'methodologies' : 'technical';
@@ -141,9 +154,9 @@ export default function App() {
         const parsed = JSON.parse(event.target?.result as string);
         if (parsed.contactInfo && parsed.experience) {
           setCvData(parsed);
-          alert('¡Currículum importado exitosamente!');
+          alert('¡Currículum importado exitosamente en ATSPASS!');
         } else {
-          alert('El archivo JSON no tiene la estructura requerida de Labor Path.');
+          alert('El archivo JSON no tiene la estructura requerida de ATSPASS.');
         }
       } catch (err) {
         alert('Error al leer el archivo JSON.');
@@ -166,7 +179,7 @@ export default function App() {
     }
   };
 
-  // Trigger Text & Spelling Audit
+  // Trigger Text & Spelling Audit (Used by the bottom purple button)
   const handleRunTextAudit = async () => {
     setIsTextAuditOpen(true);
     setTextAuditLoading(true);
@@ -225,20 +238,22 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
-      {/* Top Corporate Executive Header */}
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-200 ${
+      isDarkMode
+        ? 'dark bg-slate-950 text-slate-100 selection:bg-blue-900 selection:text-blue-100'
+        : 'bg-slate-50 text-slate-900 selection:bg-blue-100 selection:text-blue-900'
+    }`}>
+      {/* Top Corporate Executive Header with Theme Toggle & Sugerencias button */}
       <Header
         cvData={cvData}
         currentTarget={currentTarget}
-        overallScore={atsAnalysis.overallScore}
-        lastSaved={lastSaved}
-        onSelectSample={handleSelectSample}
-        onOpenTargetModal={() => setIsTargetModalOpen(true)}
+        isDarkMode={isDarkMode}
+        onToggleTheme={toggleTheme}
         onImportJSON={handleImportJSON}
       />
 
       {/* Main Workspace Layout */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="flex-1 max-w-5xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-6">
         {/* Welcome & Motivational Onboarding Banner */}
         <WelcomeBanner
           currentTarget={currentTarget}
@@ -246,227 +261,197 @@ export default function App() {
           overallScore={atsAnalysis.overallScore}
         />
 
-        {/* View Mode Switcher & Actions Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-2.5 mb-6 no-print">
-          {/* Editor vs Document Preview vs LinkedIn Optimizer Toggle */}
-          <div className="inline-flex p-1 rounded-xl bg-slate-200/80 border border-slate-300 max-w-full">
+        {/* View Mode Switcher & Actions Bar (Clean, uncluttered & responsive) */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 no-print">
+          {/* Editor vs Document Preview Toggle */}
+          <div className="inline-flex p-1 rounded-xl bg-slate-200/90 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 w-full sm:w-auto">
             <button
               onClick={() => setViewMode('editor')}
-              className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer ${
+              className={`flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                 viewMode === 'editor'
-                  ? 'bg-white text-slate-950 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-950'
+                  ? 'bg-white dark:bg-slate-900 text-slate-950 dark:text-white shadow-xs'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
               }`}
             >
-              <FileEdit className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-900" />
-              <span>Editor Guiado</span>
+              <FileEdit className="w-4 h-4 text-blue-900 dark:text-blue-400 shrink-0" />
+              <span>Editor de CV</span>
             </button>
             <button
               onClick={() => setViewMode('preview')}
-              className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer ${
+              className={`flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                 viewMode === 'preview'
-                  ? 'bg-white text-slate-950 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-950'
+                  ? 'bg-white dark:bg-slate-900 text-slate-950 dark:text-white shadow-xs'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
               }`}
             >
-              <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
+              <Eye className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Vista Previa ATS</span>
-            </button>
-            <button
-              onClick={() => setViewMode('linkedin')}
-              className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer ${
-                viewMode === 'linkedin'
-                  ? 'bg-blue-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-950'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
-              <span>Optimizar LinkedIn</span>
-              <span className={`text-[9px] uppercase font-bold px-1.5 py-0.2 rounded ${
-                viewMode === 'linkedin' ? 'bg-blue-800 text-blue-100' : 'bg-blue-100 text-blue-900'
-              }`}>
-                Pro
-              </span>
             </button>
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* Action buttons: EL BOTON MORADO DE ABAJO SE MANTIENE ("Auditar con IA") y Descargar CV */}
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            {/* Botón Morado / Índigo Inferior ("Auditar con IA"): MANTENIDO SEGÚN INSTRUCCIÓN */}
             <button
-              onClick={() => handleSelectSample(SAMPLE_PROFILES[0].id)}
-              className="px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
-              title="Restablecer al perfil predeterminado"
+              type="button"
+              onClick={handleRunTextAudit}
+              className="flex-1 sm:flex-initial px-3.5 sm:px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer"
+              title="Escanear y auditar ortografía, coherencia, acentos y estándares ATS con IA"
             >
-              <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
-              <span className="hidden sm:inline">Restablecer Ejemplo</span>
-              <span className="sm:hidden">Restablecer</span>
+              <Sparkles className="w-4 h-4 text-amber-300 shrink-0" />
+              <span>Auditar con IA</span>
+              <span className="text-[10px] uppercase font-bold bg-indigo-500/80 px-1.5 py-0.5 rounded-full">
+                Smart
+              </span>
             </button>
 
+            {/* Descargar CV */}
             <button
+              type="button"
               onClick={exportToPDF}
-              className="px-3 sm:px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+              className="flex-1 sm:flex-initial px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer"
             >
-              <Printer className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Descargar CV Optimizado</span>
+              <Printer className="w-4 h-4 shrink-0" />
+              <span className="hidden sm:inline">Descargar CV</span>
               <span className="sm:hidden">Descargar</span>
             </button>
           </div>
         </div>
 
-        {/* 2-Column Conceptual Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Left Column: Editor or Preview (approx 65% width) */}
-          <div className="lg:col-span-7 xl:col-span-8 space-y-6">
-            {viewMode === 'editor' ? (
-              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
-                {/* Stepper Tabs & Revisión de Errores Action */}
-                <div className="border-b border-slate-200 pb-3 flex flex-wrap items-center justify-between gap-2.5">
-                  <div className="flex overflow-x-auto gap-1.5 no-scrollbar">
-                    {steps.map((st, idx) => {
-                      const Icon = st.icon;
-                      const isActive = activeStep === idx;
-                      return (
-                        <button
-                          key={st.id}
-                          onClick={() => setActiveStep(idx)}
-                          className={`px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 shrink-0 transition-all cursor-pointer ${
-                            isActive
-                              ? 'bg-blue-900 text-white shadow-xs'
-                              : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
-                          }`}
-                        >
-                          <Icon className="w-3.5 h-3.5" />
-                          <span>{st.title}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* Revisión de Errores (Auditor de Texto) */}
-                  <button
-                    type="button"
-                    onClick={handleRunTextAudit}
-                    className="px-3.5 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-950 border border-indigo-200 text-xs font-bold flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer shrink-0"
-                    title="Escanear ortografía, acentos, gramática y estilo de redacción con IA"
-                  >
-                    <SpellCheck className="w-4 h-4 text-indigo-600" />
-                    <span>Revisión de Errores</span>
-                    <span className="text-[10px] bg-indigo-200 text-indigo-900 font-bold px-1.5 py-0.2 rounded-full">
-                      IA
-                    </span>
-                  </button>
-                </div>
-
-                {/* Step Form Rendering */}
-                {activeStep === 0 && (
-                  <ContactInfoForm
-                    contact={cvData.contactInfo}
-                    onChange={(updated) => setCvData({ ...cvData, contactInfo: updated })}
-                  />
-                )}
-
-                {activeStep === 1 && (
-                  <SummaryEditor
-                    summary={cvData.summary}
-                    targetJob={currentTarget.title}
-                    topSkills={[
-                      ...(cvData.skills.technical || []),
-                      ...(cvData.skills.tools || []),
-                    ]}
-                    onChange={(val) => setCvData({ ...cvData, summary: val })}
-                  />
-                )}
-
-                {activeStep === 2 && (
-                  <ExperienceEditor
-                    experience={cvData.experience}
-                    targetJob={currentTarget.title}
-                    missingKeywords={atsAnalysis.missingKeywords.map((m) => m.word)}
-                    onChange={(updated) => setCvData({ ...cvData, experience: updated })}
-                  />
-                )}
-
-                {activeStep === 3 && (
-                  <SkillsEditor
-                    skills={cvData.skills}
-                    missingKeywords={atsAnalysis.missingKeywords}
-                    onChange={(updated) => setCvData({ ...cvData, skills: updated })}
-                  />
-                )}
-
-                {activeStep === 4 && (
-                  <EducationEditor
-                    education={cvData.education}
-                    certifications={cvData.certifications}
-                    onEducationChange={(updated) => setCvData({ ...cvData, education: updated })}
-                    onCertificationsChange={(updated) =>
-                      setCvData({ ...cvData, certifications: updated })
-                    }
-                  />
-                )}
-
-                {/* Step Navigation Controls */}
-                <div className="pt-4 border-t border-slate-200 flex items-center justify-between">
-                  <button
-                    disabled={activeStep === 0}
-                    onClick={() => setActiveStep((prev) => Math.max(0, prev - 1))}
-                    className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 disabled:opacity-40 rounded-lg hover:bg-slate-100 transition-colors"
-                  >
-                    ← Paso Anterior
-                  </button>
-
-                  <div className="text-[11px] text-slate-400">
-                    Paso {activeStep + 1} de {steps.length}
-                  </div>
-
-                  {activeStep < steps.length - 1 ? (
-                    <button
-                      onClick={() => setActiveStep((prev) => Math.min(steps.length - 1, prev + 1))}
-                      className="px-4 py-2 bg-blue-900 hover:bg-blue-950 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors"
-                    >
-                      Siguiente Paso →
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => setViewMode('preview')}
-                      className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex items-center gap-1.5"
-                    >
-                      <Eye className="w-3.5 h-3.5" />
-                      Ver Documento Final
-                    </button>
-                  )}
+        {/* Workspace Container (Centered, spacious & 100% responsive) */}
+        <div className="w-full space-y-6">
+          {viewMode === 'editor' ? (
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 sm:p-7 space-y-6 transition-colors">
+              {/* Stepper Tabs */}
+              <div className="border-b border-slate-200 dark:border-slate-800 pb-3.5 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex overflow-x-auto gap-1.5 no-scrollbar w-full pb-1 sm:pb-0">
+                  {steps.map((st, idx) => {
+                    const Icon = st.icon;
+                    const isActive = activeStep === idx;
+                    return (
+                      <button
+                        key={st.id}
+                        onClick={() => setActiveStep(idx)}
+                        className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shrink-0 transition-all cursor-pointer ${
+                          isActive
+                            ? 'bg-blue-900 dark:bg-blue-600 text-white shadow-xs'
+                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                        }`}
+                      >
+                        <Icon className="w-3.5 h-3.5 shrink-0" />
+                        <span>{st.title}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
-            ) : viewMode === 'preview' ? (
-              <ResumePreview
-                cvData={cvData}
-                matchedKeywords={atsAnalysis.matchedKeywords}
-                detectedMetrics={atsAnalysis.detectedMetrics}
-              />
-            ) : (
-              <LinkedInOptimizer
-                cvData={cvData}
-                currentTarget={currentTarget}
-              />
-            )}
-          </div>
 
-          {/* Right Column: ATS Control Center & Real-Time Diagnostics (approx 35% width) */}
-          <div className="lg:col-span-5 xl:col-span-4">
-            <ATSScorePanel
-              analysis={atsAnalysis}
-              onAddMissingKeyword={handleAddMissingKeyword}
-              onRunDeepAudit={handleRunDeepAudit}
-              targetJobTitle={currentTarget.title}
+              {/* Step Form Rendering */}
+              {activeStep === 0 && (
+                <ContactInfoForm
+                  contact={cvData.contactInfo}
+                  onChange={(updated) => setCvData({ ...cvData, contactInfo: updated })}
+                />
+              )}
+
+              {activeStep === 1 && (
+                <SummaryEditor
+                  summary={cvData.summary}
+                  targetJob={currentTarget.title}
+                  topSkills={[
+                    ...(cvData.skills.technical || []),
+                    ...(cvData.skills.tools || []),
+                  ]}
+                  onChange={(val) => setCvData({ ...cvData, summary: val })}
+                />
+              )}
+
+              {activeStep === 2 && (
+                <ExperienceEditor
+                  experience={cvData.experience}
+                  targetJob={currentTarget.title}
+                  missingKeywords={atsAnalysis.missingKeywords.map((m) => m.word)}
+                  onChange={(updated) => setCvData({ ...cvData, experience: updated })}
+                />
+              )}
+
+              {activeStep === 3 && (
+                <SkillsEditor
+                  skills={cvData.skills}
+                  missingKeywords={atsAnalysis.missingKeywords}
+                  targetJobTitle={currentTarget.title}
+                  onChange={(updated) => setCvData({ ...cvData, skills: updated })}
+                />
+              )}
+
+              {activeStep === 4 && (
+                <EducationEditor
+                  education={cvData.education}
+                  certifications={cvData.certifications}
+                  onEducationChange={(updated) => setCvData({ ...cvData, education: updated })}
+                  onCertificationsChange={(updated) =>
+                    setCvData({ ...cvData, certifications: updated })
+                  }
+                />
+              )}
+
+              {/* Step Navigation Controls */}
+              <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2">
+                <button
+                  disabled={activeStep === 0}
+                  onClick={() => setActiveStep((prev) => Math.max(0, prev - 1))}
+                  className="px-3 sm:px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white disabled:opacity-40 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                >
+                  ← Anterior
+                </button>
+
+                <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                  Paso {activeStep + 1} de {steps.length}
+                </div>
+
+                {activeStep < steps.length - 1 ? (
+                  <button
+                    onClick={() => setActiveStep((prev) => Math.min(steps.length - 1, prev + 1))}
+                    className="px-4 py-2 bg-blue-900 hover:bg-blue-950 dark:bg-blue-600 dark:hover:bg-blue-500 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors cursor-pointer"
+                  >
+                    Siguiente →
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setViewMode('preview')}
+                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                    <span>Ver CV Final</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          ) : (
+            <ResumePreview
+              cvData={cvData}
+              matchedKeywords={atsAnalysis.matchedKeywords}
+              detectedMetrics={atsAnalysis.detectedMetrics}
             />
-          </div>
+          )}
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="w-full border-t border-slate-200 bg-white py-4 px-4 text-center no-print mt-auto">
-        <p className="text-xs text-slate-500 font-medium tracking-wide">
-          AJRC Servicios | Derechos reservados | Versión 1.1 | Código abierto
+      {/* Footer with ATSPASS, Versión 1.2, and Sugerencias button */}
+      <footer className="w-full border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-4 px-4 text-center no-print mt-auto transition-colors">
+        <p className="text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wide">
+          AJRC Servicios | Derechos reservados | Versión 1.2 | Código abierto
         </p>
+        <div className="mt-1.5 flex items-center justify-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+          <Mail className="w-3.5 h-3.5 text-blue-500" />
+          <span>Sugerencias:</span>
+          <a
+            href="mailto:AJRC.SERVICIOS@GMAIL.COM?subject=Sugerencia%20para%20ATSPASS"
+            className="text-blue-600 dark:text-blue-400 hover:underline font-mono text-[11px] font-semibold"
+          >
+            AJRC.SERVICIOS@GMAIL.COM
+          </a>
+        </div>
       </footer>
 
       {/* Target Job Configuration Modal */}

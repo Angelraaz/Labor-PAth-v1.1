@@ -322,7 +322,7 @@ export function calculateATSScore(cv: CVData, target: JobTarget): ATSAnalysisRes
     level: 'info',
     title: 'Estructura Lineal de Columna Única (ATS-Proof)',
     description: 'El diseño del documento es 100% lineal sin tablas anidadas, columnas múltiples ni gráficos ilegibles.',
-    solution: 'Mantén la estructura lineal garantizada por Labor Path.',
+    solution: 'Mantén la estructura lineal garantizada por ATSPASS.',
     isCompliant: true
   });
 

@@ -69,11 +69,11 @@ export const EducationEditor: React.FC<EducationEditorProps> = ({
       <div className="space-y-3.5">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-              <GraduationCap className="w-4 h-4 text-blue-900" />
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
+              <GraduationCap className="w-4 h-4 text-blue-900 dark:text-blue-400" />
               5. Formación Académica (Education)
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               Los ATS buscan títulos de grado, instituciones y año de graduación.
             </p>
           </div>
@@ -91,12 +91,12 @@ export const EducationEditor: React.FC<EducationEditorProps> = ({
           {education.map((edu, idx) => (
             <div
               key={edu.id || idx}
-              className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 relative group"
+              className="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 relative group"
             >
               <button
                 type="button"
                 onClick={() => removeEducation(idx)}
-                className="absolute right-3 top-3 p-1 text-slate-400 hover:text-red-600 rounded hover:bg-red-50 transition-colors"
+                className="absolute right-3 top-3 p-1 text-slate-400 hover:text-red-600 dark:hover:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors"
                 title="Eliminar este registro"
               >
                 <Trash2 className="w-4 h-4" />
@@ -104,34 +104,34 @@ export const EducationEditor: React.FC<EducationEditorProps> = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-8">
                 <div className="sm:col-span-2">
-                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Título Obtenido / Grado Académico
                   </label>
                   <input
                     type="text"
                     value={edu.degree}
                     onChange={(e) => updateEduField(idx, 'degree', e.target.value)}
-                    placeholder="ej. Licenciatura en Administración / Ingeniería de Software"
-                    className="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-900 font-medium"
+                    placeholder="ej. Licenciatura en Administración / Carrera Técnica Automotriz / Bachillerato"
+                    className="w-full px-3 py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white dark:placeholder-slate-500 font-medium"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Universidad o Institución
                   </label>
                   <input
                     type="text"
                     value={edu.institution}
                     onChange={(e) => updateEduField(idx, 'institution', e.target.value)}
-                    placeholder="ej. Universidad Nacional Autónoma de México"
-                    className="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-900"
+                    placeholder="ej. Universidad Nacional / Instituto Tecnológico"
+                    className="w-full px-3 py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white dark:placeholder-slate-500"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                    <label className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
                       Año de Graduación
                     </label>
                     <input
@@ -139,34 +139,21 @@ export const EducationEditor: React.FC<EducationEditorProps> = ({
                       value={edu.graduationYear}
                       onChange={(e) => updateEduField(idx, 'graduationYear', e.target.value)}
                       placeholder="2020"
-                      className="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-900"
+                      className="w-full px-3 py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white dark:placeholder-slate-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                    <label className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
                       Ubicación
                     </label>
                     <input
                       type="text"
                       value={edu.location}
                       onChange={(e) => updateEduField(idx, 'location', e.target.value)}
-                      placeholder="Ciudad, País"
-                      className="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-900"
+                      placeholder="ej. CDMX"
+                      className="w-full px-3 py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white dark:placeholder-slate-500"
                     />
                   </div>
-                </div>
-
-                <div className="sm:col-span-2">
-                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                    Detalles Adicionales / Menciones de Honor (Opcional)
-                  </label>
-                  <input
-                    type="text"
-                    value={edu.details || ''}
-                    onChange={(e) => updateEduField(idx, 'details', e.target.value)}
-                    placeholder="ej. Mención honorífica, promedio sobresaliente o tesis destacada"
-                    className="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-900"
-                  />
                 </div>
               </div>
             </div>
@@ -175,67 +162,78 @@ export const EducationEditor: React.FC<EducationEditorProps> = ({
       </div>
 
       {/* Certifications Block */}
-      <div className="space-y-3.5 pt-4 border-t border-slate-200">
+      <div className="space-y-3.5 pt-4 border-t border-slate-200 dark:border-slate-700">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-              <Award className="w-4 h-4 text-emerald-600" />
-              6. Certificaciones y Licencias Profesionales
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
+              <Award className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+              Certificaciones, Cursos y Licencias
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Las certificaciones de la industria (AWS, Scrum, PMP, Microsoft, etc.) suman puntos clave en el filtro ATS.
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              Certificaciones oficiales, cédulas, carnets o diplomas técnicos.
             </p>
           </div>
           <button
             type="button"
             onClick={addCertification}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-900 hover:bg-blue-950 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-900 dark:bg-blue-600 hover:bg-blue-950 dark:hover:bg-blue-500 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Añadir Certificación</span>
           </button>
         </div>
 
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           {certifications.map((cert, idx) => (
             <div
               key={cert.id || idx}
-              className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between gap-3"
+              className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 relative group"
             >
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 flex-1">
-                <input
-                  type="text"
-                  value={cert.name}
-                  onChange={(e) => updateCertField(idx, 'name', e.target.value)}
-                  placeholder="Nombre de la certificación (ej. AWS Certified Solutions Architect)"
-                  className="px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-900 font-medium sm:col-span-2"
-                />
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={cert.issuer}
-                    onChange={(e) => updateCertField(idx, 'issuer', e.target.value)}
-                    placeholder="Emisor (ej. AWS, PMI)"
-                    className="w-2/3 px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-900"
-                  />
-                  <input
-                    type="text"
-                    value={cert.year}
-                    onChange={(e) => updateCertField(idx, 'year', e.target.value)}
-                    placeholder="Año"
-                    className="w-1/3 px-2 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-900"
-                  />
-                </div>
-              </div>
-
               <button
                 type="button"
                 onClick={() => removeCertification(idx)}
-                className="p-1.5 text-slate-400 hover:text-red-600 rounded hover:bg-red-50"
-                title="Eliminar certificación"
+                className="absolute right-3 top-3 p-1 text-slate-400 hover:text-red-600 dark:hover:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors"
+                title="Eliminar esta certificación"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pr-8">
+                <div className="sm:col-span-2">
+                  <label className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Nombre de la Certificación o Licencia
+                  </label>
+                  <input
+                    type="text"
+                    value={cert.name}
+                    onChange={(e) => updateCertField(idx, 'name', e.target.value)}
+                    placeholder="ej. Certificación en Diagnóstico OBD-II / Scrum Master / Excel Financiero"
+                    className="w-full px-3 py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white dark:placeholder-slate-500 font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Emisor / Año
+                  </label>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    <input
+                      type="text"
+                      value={cert.issuer}
+                      onChange={(e) => updateCertField(idx, 'issuer', e.target.value)}
+                      placeholder="Emisor"
+                      className="w-full px-2 py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white dark:placeholder-slate-500"
+                    />
+                    <input
+                      type="text"
+                      value={cert.year}
+                      onChange={(e) => updateCertField(idx, 'year', e.target.value)}
+                      placeholder="Año"
+                      className="w-full px-2 py-1.5 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white dark:placeholder-slate-500"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           ))}
         </div>

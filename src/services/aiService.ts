@@ -162,6 +162,31 @@ export async function runDeepAIAudit(cvData: CVData, jobTarget: JobTarget): Prom
   }
 }
 
+export async function suggestSkillsWithAI(
+  jobTitle: string
+): Promise<{ technical: string[]; tools: string[]; methodologies: string[] }> {
+  try {
+    const res = await fetch('/api/ai/suggest-skills', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ jobTitle }),
+    });
+
+    if (!res.ok) {
+      throw new Error(`Skills suggestion error: ${res.status}`);
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.warn('AI Skills suggestion failed, returning fallback for trade:', err);
+    return {
+      technical: ['Gestión operativa', 'Control de calidad', 'Resolución de problemas', 'Normativas del sector'],
+      tools: ['Herramientas especializadas', 'Software de gestión', 'Sistemas de registro'],
+      methodologies: ['Mejora continua', 'Seguridad en el trabajo', 'Atención a estándares']
+    };
+  }
+}
+
 export async function optimizeLinkedInWithAI(
   cvData: CVData,
   jobTarget: JobTarget

@@ -8,9 +8,6 @@ import {
   ArrowDown,
   CheckCircle2,
   TrendingUp,
-  Building,
-  Calendar,
-  MapPin,
   ChevronDown,
   ChevronUp
 } from 'lucide-react';
@@ -50,7 +47,7 @@ export const ExperienceEditor: React.FC<ExperienceEditorProps> = ({
       endDate: 'Presente',
       current: true,
       bullets: [
-        'Lideré la implementación de proyectos clave, incrementando la productividad en un 25% y reduciendo tiempos de entrega.'
+        'Lideré la ejecución de actividades operativas y de control de calidad, incrementando la productividad en un 25% y reduciendo tiempos de entrega.'
       ]
     };
     const updated = [newItem, ...experience];
@@ -108,11 +105,11 @@ export const ExperienceEditor: React.FC<ExperienceEditorProps> = ({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-            <Briefcase className="w-4 h-4 text-blue-900" />
+          <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
+            <Briefcase className="w-4 h-4 text-blue-900 dark:text-blue-400" />
             3. Experiencia Laboral Cuantificable (Fórmula XYZ)
           </h3>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Los algoritmos ATS priorizan viñetas que inician con verbos en pasado y respaldan resultados con números (%, $, escala).
           </p>
         </div>
@@ -133,22 +130,22 @@ export const ExperienceEditor: React.FC<ExperienceEditorProps> = ({
           return (
             <div
               key={exp.id || expIdx}
-              className="border border-slate-200 rounded-xl bg-white shadow-xs overflow-hidden transition-all"
+              className="border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 shadow-xs overflow-hidden transition-all"
             >
               {/* Job Header Bar */}
               <div
                 onClick={() => setExpandedIndex(isExpanded ? -1 : expIdx)}
-                className="p-3.5 bg-slate-50 hover:bg-slate-100 flex items-center justify-between cursor-pointer border-b border-slate-200"
+                className="p-3.5 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between cursor-pointer border-b border-slate-200 dark:border-slate-800"
               >
                 <div className="flex items-center gap-2.5 overflow-hidden">
-                  <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-900 flex items-center justify-center shrink-0">
+                  <div className="w-7 h-7 rounded-lg bg-blue-100 dark:bg-blue-950/60 text-blue-900 dark:text-blue-300 flex items-center justify-center shrink-0">
                     <Briefcase className="w-3.5 h-3.5" />
                   </div>
                   <div className="truncate">
-                    <p className="text-xs font-bold text-slate-900 truncate">
+                    <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
                       {exp.jobTitle || 'Nuevo Puesto'} {exp.company ? `— ${exp.company}` : ''}
                     </p>
-                    <p className="text-[11px] text-slate-500">
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
                       {exp.startDate || 'Inicio'} - {exp.current ? 'Presente' : (exp.endDate || 'Fin')} | {exp.bullets.length} viñetas
                     </p>
                   </div>
@@ -161,7 +158,7 @@ export const ExperienceEditor: React.FC<ExperienceEditorProps> = ({
                       e.stopPropagation();
                       removeExperience(expIdx);
                     }}
-                    className="p-1 text-slate-400 hover:text-red-600 transition-colors rounded hover:bg-red-50"
+                    className="p-1 text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors rounded hover:bg-red-50 dark:hover:bg-red-950/40"
                     title="Eliminar este puesto"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -177,33 +174,33 @@ export const ExperienceEditor: React.FC<ExperienceEditorProps> = ({
                 <div className="p-4 space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     <div className="sm:col-span-2">
-                      <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      <label className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
                         Puesto / Cargo <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
                         value={exp.jobTitle}
                         onChange={(e) => updateExpField(expIdx, 'jobTitle', e.target.value)}
-                        placeholder="ej. Senior Full Stack Engineer"
-                        className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 focus:bg-white text-slate-900 font-medium"
+                        placeholder="ej. Supervisor de Operaciones / Mecánico / Auxiliar Administrativo"
+                        className="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 dark:focus:ring-blue-500 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white dark:placeholder-slate-500 font-medium"
                       />
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      <label className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
                         Empresa <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
                         value={exp.company}
                         onChange={(e) => updateExpField(expIdx, 'company', e.target.value)}
-                        placeholder="ej. FinTech Global Solutions"
-                        className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 focus:bg-white text-slate-900"
+                        placeholder="ej. Grupo Industrial / Taller Central / Corporativo Servicios"
+                        className="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 dark:focus:ring-blue-500 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white dark:placeholder-slate-500"
                       />
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      <label className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
                         Ubicación
                       </label>
                       <input
@@ -211,56 +208,68 @@ export const ExperienceEditor: React.FC<ExperienceEditorProps> = ({
                         value={exp.location}
                         onChange={(e) => updateExpField(expIdx, 'location', e.target.value)}
                         placeholder="ej. Remoto / Ciudad de México"
-                        className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 focus:bg-white text-slate-900"
+                        className="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 dark:focus:ring-blue-500 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white dark:placeholder-slate-500"
                       />
                     </div>
 
                     <div className="sm:col-span-2 flex items-center gap-2">
                       <div className="flex-1">
-                        <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                          Periodo
+                        <label className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                          Fecha Inicio
                         </label>
-                        <div className="flex items-center gap-1.5">
-                          <input
-                            type="text"
-                            value={exp.startDate}
-                            onChange={(e) => updateExpField(expIdx, 'startDate', e.target.value)}
-                            placeholder="2021"
-                            className="w-1/2 px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-900"
-                          />
-                          <span className="text-slate-400 text-xs">-</span>
-                          <input
-                            type="text"
-                            disabled={exp.current}
-                            value={exp.current ? 'Presente' : exp.endDate}
-                            onChange={(e) => updateExpField(expIdx, 'endDate', e.target.value)}
-                            placeholder="Presente"
-                            className="w-1/2 px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-900 disabled:opacity-60"
-                          />
-                        </div>
-                      </div>
-                      <label className="flex items-center gap-1.5 mt-5 text-[11px] text-slate-600 cursor-pointer">
                         <input
-                          type="checkbox"
-                          checked={exp.current}
-                          onChange={(e) => updateExpField(expIdx, 'current', e.target.checked)}
-                          className="rounded text-blue-900 focus:ring-blue-900"
+                          type="text"
+                          value={exp.startDate}
+                          onChange={(e) => updateExpField(expIdx, 'startDate', e.target.value)}
+                          placeholder="ej. Ene 2021"
+                          className="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 dark:focus:ring-blue-500 text-slate-900 dark:text-white dark:placeholder-slate-500"
                         />
-                        <span>Actual</span>
+                      </div>
+                      <div className="flex-1">
+                        <label className="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                          Fecha Fin
+                        </label>
+                        <input
+                          type="text"
+                          disabled={exp.current}
+                          value={exp.current ? 'Presente' : exp.endDate}
+                          onChange={(e) => updateExpField(expIdx, 'endDate', e.target.value)}
+                          placeholder="ej. Dic 2023"
+                          className="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 dark:focus:ring-blue-500 text-slate-900 dark:text-white dark:placeholder-slate-500 disabled:opacity-50"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-4 flex items-center gap-2 pt-1">
+                      <input
+                        type="checkbox"
+                        id={`curr_${expIdx}`}
+                        checked={exp.current}
+                        onChange={(e) => {
+                          const isCurr = e.target.checked;
+                          updateExpField(expIdx, 'current', isCurr);
+                          if (isCurr) {
+                            updateExpField(expIdx, 'endDate', 'Presente');
+                          }
+                        }}
+                        className="rounded border-slate-300 dark:border-slate-700 text-blue-900 dark:text-blue-500 focus:ring-blue-900"
+                      />
+                      <label htmlFor={`curr_${expIdx}`} className="text-xs text-slate-700 dark:text-slate-300 select-none cursor-pointer">
+                        Actualmente trabajo en este puesto
                       </label>
                     </div>
                   </div>
 
                   {/* Bullet points section */}
-                  <div className="pt-2 border-t border-slate-100">
+                  <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
                     <div className="flex items-center justify-between mb-2">
-                      <label className="text-[11px] font-bold text-slate-800 uppercase tracking-wider">
+                      <label className="text-[11px] font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
                         Logros Cuantificables (Viñetas de Impacto)
                       </label>
                       <button
                         type="button"
                         onClick={() => addBullet(expIdx)}
-                        className="text-[11px] font-semibold text-blue-900 hover:text-blue-950 flex items-center gap-1"
+                        className="text-[11px] font-semibold text-blue-900 dark:text-blue-400 hover:text-blue-950 dark:hover:text-blue-300 flex items-center gap-1 cursor-pointer"
                       >
                         <Plus className="w-3.5 h-3.5" /> Añadir viñeta
                       </button>
@@ -274,10 +283,10 @@ export const ExperienceEditor: React.FC<ExperienceEditorProps> = ({
                         return (
                           <div
                             key={bulletIdx}
-                            className="p-3 bg-slate-50/70 rounded-lg border border-slate-200 hover:border-slate-300 transition-colors"
+                            className="p-3 bg-slate-50/70 dark:bg-slate-800/60 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
                           >
                             <div className="flex items-start gap-2">
-                              <span className="text-slate-400 font-bold text-xs mt-1.5 select-none">
+                              <span className="text-slate-400 dark:text-slate-500 font-bold text-xs mt-1.5 select-none">
                                 •
                               </span>
                               <textarea
@@ -285,31 +294,31 @@ export const ExperienceEditor: React.FC<ExperienceEditorProps> = ({
                                 value={bullet}
                                 onChange={(e) => updateBullet(expIdx, bulletIdx, e.target.value)}
                                 placeholder="Escribe tu logro iniciando con un verbo en pasado y agregando métricas numéricas..."
-                                className="flex-1 p-2 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 text-slate-800 leading-relaxed"
+                                className="flex-1 p-2 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 dark:focus:ring-blue-500 text-slate-800 dark:text-slate-100 dark:placeholder-slate-500 leading-relaxed"
                               />
                             </div>
 
                             {/* Bullet Diagnostic Bar & Actions */}
-                            <div className="mt-2 pt-1.5 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                            <div className="mt-2 pt-1.5 border-t border-slate-200/60 dark:border-slate-700/60 flex flex-wrap items-center justify-between gap-2 text-[11px]">
                               {/* Diagnostic Badges */}
                               <div className="flex flex-wrap items-center gap-1.5">
                                 {verbCheck.startsWithVerb ? (
-                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-medium text-[10px]">
-                                    <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Verbo: "{verbCheck.verb}"
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-medium text-[10px]">
+                                    <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Verbo: "{verbCheck.verb}"
                                   </span>
                                 ) : (
-                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px]">
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 text-[10px]">
                                     ⚠️ Inicia con verbo en pasado
                                   </span>
                                 )}
 
                                 {metrics.length > 0 ? (
-                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-medium text-[10px]">
-                                    <TrendingUp className="w-3 h-3 text-blue-600" />
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-medium text-[10px]">
+                                    <TrendingUp className="w-3 h-3 text-blue-600 dark:text-blue-400" />
                                     Métrica: {metrics.map(m => m.text).join(', ')}
                                   </span>
                                 ) : (
-                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-200 text-slate-600 text-[10px]">
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-[10px]">
                                     Sin métrica (%, $, núm)
                                   </span>
                                 )}
@@ -326,18 +335,18 @@ export const ExperienceEditor: React.FC<ExperienceEditorProps> = ({
                                       text: bullet
                                     })
                                   }
-                                  className="px-2 py-1 bg-blue-900 hover:bg-blue-950 text-white rounded text-[11px] font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+                                  className="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-[11px] font-bold flex items-center gap-1 shadow-2xs transition-colors cursor-pointer"
                                   title="Optimizar con Fórmula Google XYZ usando IA"
                                 >
                                   <Sparkles className="w-3 h-3 text-amber-300" />
-                                  <span>Optimizar XYZ</span>
+                                  <span>Optimizar con IA</span>
                                 </button>
 
                                 <button
                                   type="button"
                                   onClick={() => moveBullet(expIdx, bulletIdx, 'up')}
                                   disabled={bulletIdx === 0}
-                                  className="p-1 text-slate-400 hover:text-slate-700 disabled:opacity-30 rounded hover:bg-slate-200"
+                                  className="p-1 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 disabled:opacity-30 rounded hover:bg-slate-200 dark:hover:bg-slate-700"
                                   title="Subir viñeta"
                                 >
                                   <ArrowUp className="w-3.5 h-3.5" />
@@ -346,7 +355,7 @@ export const ExperienceEditor: React.FC<ExperienceEditorProps> = ({
                                   type="button"
                                   onClick={() => moveBullet(expIdx, bulletIdx, 'down')}
                                   disabled={bulletIdx === exp.bullets.length - 1}
-                                  className="p-1 text-slate-400 hover:text-slate-700 disabled:opacity-30 rounded hover:bg-slate-200"
+                                  className="p-1 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 disabled:opacity-30 rounded hover:bg-slate-200 dark:hover:bg-slate-700"
                                   title="Bajar viñeta"
                                 >
                                   <ArrowDown className="w-3.5 h-3.5" />
@@ -354,7 +363,7 @@ export const ExperienceEditor: React.FC<ExperienceEditorProps> = ({
                                 <button
                                   type="button"
                                   onClick={() => removeBullet(expIdx, bulletIdx)}
-                                  className="p-1 text-slate-400 hover:text-red-600 rounded hover:bg-red-50"
+                                  className="p-1 text-slate-400 hover:text-red-600 dark:hover:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-950/40"
                                   title="Eliminar viñeta"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />

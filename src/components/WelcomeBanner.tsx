@@ -26,25 +26,25 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
           </div>
 
           <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white">
-            Bienvenido a Labor Path
+            Bienvenido a ATSPASS
           </h1>
 
           <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-            Tu centro de comando para construir un currículum ejecutivo <strong>100% inmune al descarte automático de los ATS</strong> (Workday, Taleo, Greenhouse). Analizamos en tiempo real la compatibilidad de palabras clave, cuantificación de logros y jerarquía lineal.
+            Tu centro de comando para construir un currículum profesional y multidisciplinario <strong>100% inmune al descarte automático de los ATS</strong> (Workday, Taleo, Greenhouse). Redacción inteligente adaptada a tu profesión u oficio.
           </p>
 
           <div className="pt-1 flex flex-wrap items-center gap-2 sm:gap-4 text-[11px] sm:text-xs text-slate-300">
             <span className="flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Columna única
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Formato monocolumna ATS
             </span>
             <span className="flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Fórmula Google XYZ
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Logros cuantificados XYZ
             </span>
             <span className="flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Autoguardado
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Corrección gramatical con IA
             </span>
             <span className="flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5 text-blue-400 shrink-0" /> Auditoría LinkedIn
+              <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400 shrink-0" /> 100% Multidisciplinario
             </span>
           </div>
         </div>
@@ -54,10 +54,10 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
           <div>
             <div className="flex items-center justify-between text-xs text-slate-300 mb-1">
               <span className="uppercase tracking-wider font-semibold text-emerald-400 text-[11px]">
-                Puesto Objetivo Actual
+                Puesto u Oficio Objetivo
               </span>
-              <span className="text-[11px] font-mono bg-emerald-950/80 px-2 py-0.5 rounded text-emerald-300 font-bold">
-                {overallScore}% Match
+              <span className="text-[10px] font-medium bg-blue-900/60 border border-blue-400/40 px-2 py-0.5 rounded text-blue-200">
+                Calibrado
               </span>
             </div>
             <p className="font-bold text-white text-sm sm:text-base truncate">
