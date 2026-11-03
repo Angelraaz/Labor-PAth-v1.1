@@ -304,10 +304,37 @@ export async function auditTextSpellingWithAI(
       }
     }
 
-    // Check experience bullets for weak verbs or missing punctuation
+    // Check summary and experience bullets for clichés and weak verbs
+    const clichesRegex = /\b(apasionado|apasionada|proactivo|proactiva|trabajador en equipo din[aá]mico|trabajadora en equipo din[aá]mica|orientado a resultados|altamente motivado|altamente motivada)\b/gi;
+    if (summaryText && clichesRegex.test(summaryText)) {
+      issues.push({
+        id: 'local_cliche_sum',
+        targetSection: 'summary',
+        originalText: summaryText,
+        suggestedText: summaryText.replace(clichesRegex, 'especialista con logros comprobables'),
+        errorType: 'estilo_redacción',
+        title: 'Eliminación de cliché genérico no medible',
+        explanation: 'Los reclutadores senior y algoritmos ATS penalizan adjetivos subjetivos como "apasionado" o "proactivo". Deben sustituirse por competencias técnicas verificables y resultados cuantificables.'
+      });
+    }
+
+    // Check experience bullets for weak verbs, clichés, or non-XYZ formulas
     (cvData.experience || []).forEach((exp, expIdx) => {
       (exp.bullets || []).forEach((bullet, bIdx) => {
         const trimmed = bullet.trim();
+        if (clichesRegex.test(trimmed)) {
+          issues.push({
+            id: `local_cliche_${expIdx}_${bIdx}`,
+            targetSection: 'experience',
+            expIndex: expIdx,
+            bulletIndex: bIdx,
+            originalText: bullet,
+            suggestedText: bullet.replace(clichesRegex, 'con rigor técnico y estándares de calidad'),
+            errorType: 'estilo_redacción',
+            title: 'Cliché subjetivo detectado',
+            explanation: 'Sustituye clichés como "proactivo" o "apasionado" por la descripción del método técnico y el impacto medible alcanzado.'
+          });
+        }
         if (/^(responsable de|encargado de|hice|apoye en|ayude en)/i.test(trimmed)) {
           issues.push({
             id: `local_weak_${expIdx}_${bIdx}`,
@@ -318,7 +345,7 @@ export async function auditTextSpellingWithAI(
             suggestedText: bullet.replace(/^(responsable de|encargado de|hice|apoye en|ayude en)\s+/i, 'Gestioné y coordiné '),
             errorType: 'estilo_redacción',
             title: 'Verbo de redacción débil o pasivo',
-            explanation: 'Sustituye fórmulas pasivas como "responsable de" por verbos de acción directa ("Gestioné", "Coordiné", "Ejecuté") para transmitir mayor liderazgo y profesionalismo.'
+            explanation: 'Sustituye fórmulas pasivas como "responsable de" por verbos de acción directa ("Gestioné", "Coordiné", "Ejecuté") bajo el método XYZ para transmitir alto impacto.'
           });
         }
       });

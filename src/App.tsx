@@ -437,10 +437,10 @@ export default function App() {
         </div>
       </main>
 
-      {/* Footer with ATSPASS, Versión 1.2, and Sugerencias button */}
+      {/* Footer with ATSPASS, Versión 1.6, and Sugerencias button */}
       <footer className="w-full border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-4 px-4 text-center no-print mt-auto transition-colors">
         <p className="text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wide">
-          AJRC Servicios | Derechos reservados | Versión 1.2 | Código abierto
+          AJRC Servicios | Derechos reservados | Versión 1.6 | Código abierto
         </p>
         <div className="mt-1.5 flex items-center justify-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
           <Mail className="w-3.5 h-3.5 text-blue-500" />

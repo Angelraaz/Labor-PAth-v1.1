@@ -73,7 +73,7 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
             className="mt-3 sm:mt-4 w-full py-2.5 px-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-lg flex items-center justify-center gap-1.5 transition-all shadow-sm cursor-pointer min-h-[42px]"
           >
             <Target className="w-4 h-4 text-slate-950 shrink-0" />
-            <span className="truncate">{currentTarget.title ? 'Modificar Vacante / Requisitos' : 'Definir Puesto Objetivo'}</span>
+            <span className="truncate">Coloca a qué te postulas</span>
             <ChevronRight className="w-4 h-4 shrink-0" />
           </button>
         </div>

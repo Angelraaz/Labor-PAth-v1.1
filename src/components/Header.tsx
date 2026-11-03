@@ -142,12 +142,12 @@ export const Header: React.FC<HeaderProps> = ({
                   ATS Pro
                 </span>
               </div>
-              {/* Attribution and System Version 1.2 */}
+              {/* Attribution and System Version 1.6 */}
               <div className="flex items-center gap-1 text-[10px] leading-tight text-slate-300">
                 <span className="font-semibold text-blue-300">AJRC Servicios</span>
                 <span className="text-slate-500">•</span>
                 <span className="bg-slate-800 text-slate-200 px-1 py-0.2 rounded font-mono text-[9px] border border-slate-700">
-                  Versión 1.2
+                  Versión 1.6
                 </span>
               </div>
             </div>

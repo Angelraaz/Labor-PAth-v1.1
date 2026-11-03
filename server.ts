@@ -24,6 +24,27 @@ const ai = new GoogleGenAI({
   },
 });
 
+// Master Senior HR & ATS Optimization System Prompt
+const SENIOR_HR_SYSTEM_INSTRUCTION = `Eres un Experto Senior en Recursos Humanos, Reclutamiento Ejecutivo y Optimización de Algoritmos ATS (Applicant Tracking Systems como Workday, Taleo, Greenhouse, iCIMS, Lever).
+
+DIRECTIVAS DEL SISTEMA Y REGLAS ESTRICTAS DE REDACCIÓN:
+1. PROHIBICIÓN ESTRICTA DE CLICHÉS GENÉRICOS:
+   Queda terminantemente prohibido utilizar o tolerar clichés vacíos y adjetivos subjetivos sin sustento, tales como:
+   "apasionado", "proactivo", "trabajador en equipo dinámico", "orientado a resultados", "altamente motivado", "capacidad de adaptación", "pensamiento fuera de la caja", "entusiasta", "responsable", "comprometido".
+   Ningún reclutador senior ni algoritmo ATS valora adjetivos subjetivos; todo debe demostrarse mediante hechos y métricas.
+
+2. MÉTODO GOOGLE XYZ (LOGROS CUANTIFICABLES OBLIGATORIOS):
+   Toda sugerencia de redacción de experiencia y viñetas DEBE estructurarse de manera obligatoria bajo la fórmula de logros cuantificables XYZ de Google:
+   "Logré [X], medido a través de [Y] (métrica porcentual %, monetaria $, reducción de tiempos o volumen cuantificable), mediante [Z] (acción técnica concreta, herramienta o proceso específico)."
+
+3. VERBOS DE ACCIÓN FUERTES:
+   Todas las oraciones y viñetas deben comenzar con un verbo de acción fuerte, contundente y decisivo en tiempo pasado (pretérito perfecto simple en primera persona o pretérito ejecutivo: p. ej., "Optimicé", "Implementé", "Confeccioné", "Diagnosticó", "Audité", "Negocié", "Reduje", "Facturé", "Supervisé", "Reorganicé", "Instalé", "Coordiné").
+   Prohíbe estrictamente frases pasivas o débiles como "encargado de", "responsable de", "hice", "apoyo en".
+
+4. JERGA TÉCNICA EXACTA DEL PUESTO U OFICIO OBJETIVO:
+   Utiliza de forma obligatoria la jerga técnica, herramientas, maquinaria, software, normativas de calidad y metodologías operativas exactas que correspondan al puesto, oficio o profesión objetivo introducido por el usuario (sea mecánica automotriz, soldadura, confección textil, auxiliar administrativo, enfermería clínica, operaciones logísticas, etc.).
+   Nunca asumas informática o desarrollo de software a menos que el usuario indique explícitamente una vacante de TI/programación.`;
+
 // API Routes for ATS & AI Intelligence
 app.post('/api/ai/extract-job-entities', async (req: Request, res: Response) => {
   try {
@@ -33,44 +54,33 @@ app.post('/api/ai/extract-job-entities', async (req: Request, res: Response) => 
       return;
     }
 
-    const prompt = `Act as an enterprise ATS (Applicant Tracking System) parser and senior recruiter across ALL industries, trades, and professions (administration, automotive mechanics, textile & tailoring, healthcare & nursing, sales & commerce, logistics, manufacturing, education, engineering, technology, etc.).
+    const prompt = `Actúa como Director Senior de Recursos Humanos y Arquitecto de Algoritmos ATS.
+Analiza esta oferta laboral para la posición u oficio "${jobTitle || 'Puesto Objetivo'}".
 
-CRITICAL MULTIDISCIPLINARY RULE:
-Analyze this job posting for the position "${jobTitle || 'Target Position'}".
-Adapt strictly and exclusively to the specific trade, sector, and industry indicated in this job title and description.
-DO NOT assume or insert computer science, programming, cloud, or IT terminology unless the target position is explicitly a software development or IT role.
-- If the role is a mechanic: extract mechanical diagnosis, OBD-II scanner, engines, brakes, industrial safety norms, preventative maintenance.
-- If the role is in tailoring/seamstress: extract industrial sewing machines, pattern drafting, fabric cutting, garment assembly, textile quality.
-- If the role is administrative: extract CFDI/SAT electronic billing, bank reconciliations, office management, accounts payable/receivable, Excel, ERP.
-- If the role is healthcare: extract triage, clinical patient care, vital signs, medication administration, biosecurity norms.
+REGLAS DE FILTRADO TÉCNICO:
+1. Adapta el análisis estrictamente al oficio, sector o profesión indicada (automotriz, textil, administrativo, salud, comercio, manufactura, etc.).
+2. PROHIBIDO extraer o incluir clichés genéricos vacíos ("proactivo", "apasionado", "trabajo en equipo dinámico").
+3. Extrae la jerga técnica exacta, maquinaria, herramientas operativas y verbos de acción fuertes del sector.
 
-Extract the core ATS entities in strict JSON format:
-1. technicalSkills: core industry or trade competencies specific to this exact field.
-2. toolsAndSoftware: physical machinery, specialized tools, diagnostic instruments, office software, or trade equipment used in this profession.
-3. methodologies: industry operating standards, quality controls, safety protocols (e.g., 5S, NOM, bioseguridad, control de merma, conciliación contable).
-4. actionVerbs: key impact action verbs emphasized in this trade.
-5. softSkills: interpersonal and workplace qualities.
-6. certificationsAndEducation: trade licenses, diplomas, or degrees required/preferred.
-7. seniorityLevel: estimated seniority (Técnico / Operativo / Junior / Mid / Senior / Jefe de Área).
-
-Job Description:
+Oferta laboral:
 """${jobDescription.slice(0, 4000)}"""
 
-Return ONLY a valid JSON object matching this structure:
+Extrae en formato JSON estricto:
 {
-  "technicalSkills": ["..."],
-  "toolsAndSoftware": ["..."],
-  "methodologies": ["..."],
-  "actionVerbs": ["..."],
-  "softSkills": ["..."],
-  "certificationsAndEducation": ["..."],
-  "seniorityLevel": "Mid"
+  "technicalSkills": ["competencia técnica específica del oficio 1", "..."],
+  "toolsAndSoftware": ["maquinaria, instrumental, equipo físico o software exacto del oficio", "..."],
+  "methodologies": ["normativas, estándares de calidad o protocolos operativos (e.g. 5S, NOM, ISO, bioseguridad, conciliaciones)", "..."],
+  "actionVerbs": ["verbos de acción fuertes del sector (e.g. Diagnosticar, Confeccionar, Auditar, Negociar)", "..."],
+  "softSkills": ["cualidades operativas concretas (e.g. puntualidad en entregas, atención a detalles técnicos)", "..."],
+  "certificationsAndEducation": ["licencias de oficio, diplomas técnicos o grados requeridos", "..."],
+  "seniorityLevel": "Operativo / Técnico / Mid / Senior / Jefe de Área"
 }`;
 
     const response = await ai.models.generateContent({
       model: 'gemini-3.8-flash',
       contents: prompt,
       config: {
+        systemInstruction: SENIOR_HR_SYSTEM_INSTRUCTION,
         responseMimeType: 'application/json',
         temperature: 0.2,
       },
@@ -92,48 +102,43 @@ app.post('/api/ai/optimize-bullet', async (req: Request, res: Response) => {
       return;
     }
 
-    const prompt = `Act as an expert resume writer and ATS optimization specialist across multidisciplinary trades and professions (crafts, administration, mechanical, nursing, textile, sales, operations, technology).
-Rewrite this work experience bullet point following the Google XYZ formula:
-"Accomplished [X] as measured by [Y] by doing [Z]"
-(in Spanish: "Logré [X], medido a través de [Y], mediante [Z]").
+    const prompt = `Actúa como Director Senior de Recursos Humanos y Experto en Optimización ATS.
+Reescribe esta viñeta de experiencia laboral para el puesto u oficio "${targetJob || 'Puesto Profesional'}".
 
-Target Role: ${targetJob || 'Professional Position'}
-Keywords to weave in naturally: ${keywordsToIncorporate ? JSON.stringify(keywordsToIncorporate) : 'None specified'}
-Original Bullet: "${rawBullet}"
-Target Language: ${language === 'en' ? 'English' : 'Spanish'}
+DIRECTIVAS OBLIGATORIAS:
+1. PROHIBICIÓN ESTRICTA DE CLICHÉS GENÉRICOS: Prohibido incluir palabras como "apasionado", "proactivo", "trabajador en equipo dinámico", "responsable", "motivado".
+2. MÉTODO XYZ DE GOOGLE: Redacta obligatoriamente con la estructura "Logré [X], medido a través de [Y] (con métricas cuantificables %, $, tiempo o volumen), mediante [Z] (técnica, herramienta o procedimiento)".
+3. VERBOS DE ACCIÓN FUERTES: Inicia obligatoriamente con un verbo de acción fuerte y contundente en tiempo pasado (e.g., Confeccioné, Reparé, Diagnosticó, Facturé, Concilié, Negocié, Optimicé, Reduje, Incrementé, Coordiné). Prohibido "encargado de" o "hice".
+4. JERGA TÉCNICA EXACTA DEL OFICIO: Usa exclusivamente el vocabulario técnico, instrumental y métricas reales del oficio de "${targetJob}". No uses términos de programación o nube a menos que el puesto sea estrictamente de desarrollo de software.
 
-CRITICAL MULTIDISCIPLINARY RULE:
-Strictly adapt the vocabulary, action verbs, and metrics to the specific sector and trade of the target role ("${targetJob}").
-DO NOT inject IT, programming, software, or cloud terms unless the role is strictly in software development!
-Use realistic metrics belonging to this specific trade (e.g. vehículos reparados por semana, reducción de merma textil en %, reducción de cartera vencida en %, precisión en arqueos de caja, satisfacción de pacientes o clientes, piezas confeccionadas por turno).
+Palabras clave a incorporar naturalmente: ${keywordsToIncorporate ? JSON.stringify(keywordsToIncorporate) : 'Ninguna'}
+Viñeta original: "${rawBullet}"
+Idioma objetivo: ${language === 'en' ? 'English' : 'Spanish'}
 
-Rules:
-1. Start with a decisive, high-impact past-tense action verb fitting this exact trade (e.g., Confeccioné, Reparé, Diagnosticó, Facturé, Concilié, Atendí, Gestioné, Optimicé, Reduje, Incrementé).
-2. Incorporate realistic, quantified operational metrics (%, unidades, tiempo ahorrado, montos monetarios o volumen de atención).
-3. Ensure 100% single-sentence, ATS-friendly linear syntax without emojis or asterisks.
-4. Provide 3 variations:
-   - variation1: Métricas y Rendimiento Operativo (Focus on numbers, savings, or volume)
-   - variation2: Responsabilidad y Eficiencia (Focus on process control and reliability)
-   - variation3: Técnica y Estándares del Oficio (Focus on tools, equipment, and quality standards)
+Genera 3 variaciones basadas en logros cuantificables:
+- variation1: "Métricas y Rendimiento Operativo" (Enfoque en números, reducción de merma/tiempo o volumen)
+- variation2: "Responsabilidad y Control de Calidad" (Enfoque en normas, supervisión y estándares del sector)
+- variation3: "Técnica y Estándares del Oficio" (Enfoque en herramientas especializadas, instrumental y procedimientos)
 
-Return ONLY a valid JSON object:
+Retorna ÚNICAMENTE un JSON válido:
 {
-  "recommended": "the single best overall version",
+  "recommended": "la mejor versión optimizada con fórmula XYZ, verbo fuerte y jerga técnica",
   "variations": [
     { "type": "Métricas y Rendimiento Operativo", "text": "..." },
-    { "type": "Responsabilidad y Eficiencia", "text": "..." },
+    { "type": "Responsabilidad y Control de Calidad", "text": "..." },
     { "type": "Técnica y Estándares del Oficio", "text": "..." }
   ],
-  "metricsIncluded": ["e.g. 28%", "e.g. 150 piezas"],
-  "actionVerb": "e.g. Confeccioné"
+  "metricsIncluded": ["e.g. 28%", "e.g. 150 piezas/turno"],
+  "actionVerb": "e.g. Diagnosticó"
 }`;
 
     const response = await ai.models.generateContent({
       model: 'gemini-3.8-flash',
       contents: prompt,
       config: {
+        systemInstruction: SENIOR_HR_SYSTEM_INSTRUCTION,
         responseMimeType: 'application/json',
-        temperature: 0.3,
+        temperature: 0.25,
       },
     });
 
@@ -149,29 +154,25 @@ app.post('/api/ai/generate-summary', async (req: Request, res: Response) => {
   try {
     const { currentSummary, targetJob, topSkills, yearsOfExperience, language = 'es' } = req.body;
 
-    const prompt = `Act as an executive recruiter and ATS resume specialist across multidisciplinary industries.
-Create or optimize a 3 to 4-sentence Executive Summary (Resumen Profesional) for a resume targeting the role "${targetJob}".
+    const prompt = `Actúa como Director Senior de Recursos Humanos y Especialista de Alto Nivel en Motores ATS.
+Crea o perfecciona un Resumen Profesional Ejecutivo (3 a 4 oraciones) para el puesto u oficio "${targetJob}".
 
-CRITICAL MULTIDISCIPLINARY RULE:
-Adapt strictly to the specific trade, industry, or profession of "${targetJob}".
-DO NOT assume technology or software development unless the target role is explicitly in computer science or IT.
-Information:
-- Current summary/draft: "${currentSummary || 'None provided'}"
-- Top skills to highlight: ${topSkills ? topSkills.join(', ') : 'Relevant industry competencies'}
-- Seniority/Experience: ${yearsOfExperience || 'Mid-Senior'}
-- Target Language: ${language === 'en' ? 'English' : 'Spanish'}
+DIRECTIVAS OBLIGATORIAS:
+1. PROHIBICIÓN ESTRICTA DE CLICHÉS GENÉRICOS: Prohibido estrictamente usar "apasionado", "proactivo", "trabajador en equipo dinámico", "orientado a resultados", "altamente motivado", "pensamiento fuera de la caja".
+2. LOGROS CUANTIFICABLES (MÉTODO XYZ): Incluye logros medibles verificables con porcentajes (%), reducciones de tiempo o volumen de operación.
+3. JERGA TÉCNICA EXACTA DEL PUESTO U OFICIO: Usa la terminología técnica, herramientas, maquinaria o software propios de "${targetJob}".
+4. VERBOS DE ACCIÓN FUERTES: Usa verbos de impacto que denoten dominio profesional y liderazgo técnico.
+5. LONGITUD: 3 a 4 oraciones directas (50-80 palabras). Formato lineal de párrafo único.
 
-ATS Requirements:
-1. Exactly 3 to 4 sentences (approx 50-80 words).
-2. Sentence 1: Professional identity in this trade/industry, total years of experience, core area of specialization.
-3. Sentence 2: Key trade competencies, machinery/tools, and quality or operating methodologies for this specific profession.
-4. Sentence 3-4: Major career accomplishment with quantifiable impact and value brought to the employer/organization.
-5. Strictly ATS single-paragraph format. No bullet points.
+Borrador actual: "${currentSummary || 'Sin borrador'}"
+Habilidades técnicas clave: ${topSkills ? topSkills.join(', ') : 'Competencias del sector'}
+Años de experiencia: ${yearsOfExperience || '5+'}
+Idioma: ${language === 'en' ? 'English' : 'Spanish'}
 
-Return ONLY a valid JSON object:
+Retorna ÚNICAMENTE JSON:
 {
-  "summary": "The optimized professional summary text...",
-  "highlightedKeywords": ["keyword1", "keyword2"],
+  "summary": "Párrafo profesional optimizado sin clichés, con logros cuantificables y jerga técnica exacta...",
+  "highlightedKeywords": ["palabraClave1", "palabraClave2"],
   "wordCount": 65
 }`;
 
@@ -179,8 +180,9 @@ Return ONLY a valid JSON object:
       model: 'gemini-3.8-flash',
       contents: prompt,
       config: {
+        systemInstruction: SENIOR_HR_SYSTEM_INSTRUCTION,
         responseMimeType: 'application/json',
-        temperature: 0.3,
+        temperature: 0.25,
       },
     });
 
@@ -196,35 +198,41 @@ app.post('/api/ai/deep-ats-audit', async (req: Request, res: Response) => {
   try {
     const { cvData, jobTarget } = req.body;
 
-    const prompt = `You are the lead engineering architect of an enterprise ATS parser (like Taleo, Workday, Greenhouse, iCIMS).
-Perform an exhaustive technical audit of this candidate CV payload against the target job requirements.
+    const prompt = `Actúa como Director Senior de Recursos Humanos y Auditor Principal de Algoritmos ATS (Workday, Taleo, Greenhouse).
+Realiza una auditoría exhaustiva técnica y cualitativa de este currículum contra el puesto objetivo "${jobTarget?.title || 'Puesto Objetivo'}".
 
-Target Job:
-Title: ${jobTarget?.title || 'Not specified'}
-Job Description snippet: ${jobTarget?.rawDescription?.slice(0, 1500) || 'Not specified'}
+CRITERIOS DE AUDITORÍA:
+1. Detección y penalización de clichés genéricos ("apasionado", "proactivo", "trabajador en equipo dinámico").
+2. Cumplimiento de la fórmula de logros cuantificables XYZ de Google (porcentajes, métricas monetarias, volumen de piezas o clientes).
+3. Prevalencia de verbos de acción fuertes en tiempo pasado.
+4. Presencia de la jerga técnica exacta del oficio u ocupación.
 
-Candidate CV Payload:
+Puesto Objetivo:
+Título: ${jobTarget?.title || 'No especificado'}
+Descripción: ${jobTarget?.rawDescription?.slice(0, 1500) || 'No especificado'}
+
+Payload del Currículum:
 ${JSON.stringify(cvData, null, 2).slice(0, 3500)}
 
-Analyze and return strict JSON:
+Retorna en formato JSON estricto:
 {
-  "overallVerdict": "High Compatibility / Needs Optimization / At Risk",
+  "overallVerdict": "Alta Compatibilidad ATS / Requiere Cuantificación / En Riesgo por Clichés",
   "atsScore": 88,
   "strengths": ["...", "..."],
   "criticalGaps": ["...", "..."],
   "keywordRecommendations": [
-    { "keyword": "...", "reason": "...", "suggestedPlacement": "Skills / Experience" }
+    { "keyword": "...", "reason": "...", "suggestedPlacement": "Habilidades / Experiencia" }
   ],
   "formattingCompliance": {
     "isSingleColumn": true,
     "hasUnreadableElements": false,
-    "quantifiableMetricsRatio": "75%",
-    "actionVerbPrevalence": "85%"
+    "quantifiableMetricsRatio": "80%",
+    "actionVerbPrevalence": "90%"
   },
   "actionPlanToReach95": [
-    "Step 1: ...",
-    "Step 2: ...",
-    "Step 3: ..."
+    "Paso 1: ...",
+    "Paso 2: ...",
+    "Paso 3: ..."
   ]
 }`;
 
@@ -232,6 +240,7 @@ Analyze and return strict JSON:
       model: 'gemini-3.8-flash',
       contents: prompt,
       config: {
+        systemInstruction: SENIOR_HR_SYSTEM_INSTRUCTION,
         responseMimeType: 'application/json',
         temperature: 0.2,
       },
@@ -253,23 +262,24 @@ app.post('/api/ai/suggest-skills', async (req: Request, res: Response) => {
       return;
     }
 
-    const prompt = `Act as an expert recruiter and ATS analyzer.
-For the job position or trade: "${jobTitle}", provide the top industry-specific skills, tools/machinery, and operational methodologies that ATS systems and recruiters scan for.
-CRITICAL: Adapt strictly to this specific trade or profession (whether it's mechanic, seamstress, driver, administrative assistant, nurse, sales, chef, engineer, teacher, etc.). Do NOT assume software engineering unless the job is explicitly in IT.
+    const prompt = `Actúa como Director Senior de Recursos Humanos y Auditor de Algoritmos ATS.
+Para el puesto u oficio objetivo: "${jobTitle}", proporciona las competencias técnicas, maquinaria/herramientas exactas y normativas operativas que buscan los empleadores del sector.
+REGLA: Prohibido clichés blandos como "proactivo" o "trabajo en equipo". Incluye exclusivamente la jerga técnica concreta del oficio.
 
-Return ONLY a valid JSON object:
+Retorna ÚNICAMENTE JSON:
 {
-  "technical": ["Habilidad/Competencia 1", "Habilidad 2", "Habilidad 3", "Habilidad 4", "Habilidad 5", "Habilidad 6"],
-  "tools": ["Herramienta/Equipo/Software 1", "Herramienta 2", "Herramienta 3", "Herramienta 4"],
-  "methodologies": ["Metodología/Norma/Procedimiento 1", "Norma 2", "Protocolo 3"]
+  "technical": ["Habilidad o competencia técnica del oficio 1", "Competencia 2", "Competencia 3", "Competencia 4", "Competencia 5", "Competencia 6"],
+  "tools": ["Herramienta especializada, instrumental, maquinaria o software 1", "Herramienta 2", "Herramienta 3", "Herramienta 4"],
+  "methodologies": ["Norma de calidad, protocolo de seguridad o metodología operativa 1", "Procedimiento 2", "Estándar 3"]
 }`;
 
     const response = await ai.models.generateContent({
       model: 'gemini-3.8-flash',
       contents: prompt,
       config: {
+        systemInstruction: SENIOR_HR_SYSTEM_INSTRUCTION,
         responseMimeType: 'application/json',
-        temperature: 0.3,
+        temperature: 0.25,
       },
     });
 
@@ -388,6 +398,7 @@ Return ONLY valid JSON matching this schema:
       model: 'gemini-3.8-flash',
       contents: prompt,
       config: {
+        systemInstruction: SENIOR_HR_SYSTEM_INSTRUCTION,
         responseMimeType: 'application/json',
         temperature: 0.3,
       },
@@ -423,30 +434,34 @@ app.post('/api/ai/audit-text-spelling', async (req: Request, res: Response) => {
       }))
     };
 
-    const prompt = `Act as an expert copyeditor, executive Spanish linguist, and senior resume editor across all professional disciplines.
-Perform an in-depth linguistic and stylistic audit of this candidate resume text:
-1. Orthographic and spelling mistakes (missing or misplaced tildes/accents, typos, capitalization of job titles vs common nouns).
-2. Grammatical errors (subject-verb agreement, gender/number concordance, tense consistency in past accomplishments).
-3. Executive style & clarity issues (weak generic phrasing like "encargado de" or "hice", punctuation consistency, conciseness).
+    const prompt = `Actúa como Director Senior de Recursos Humanos, Editor Ejecutivo de CVs y Auditor Especialista en ATS.
+Realiza una auditoría lingüística, ortográfica y estilística exhaustiva de este currículum:
+1. Ortografía y acentuación (tildes faltantes o erróneas, erratas tipográficas, mayúsculas correctas según la RAE).
+2. Gramática y concordancia (género, número, concordancia verbal y tiempos en pretérito para logros pasados).
+3. PROHIBICIÓN Y ELIMINACIÓN DE CLICHÉS GENÉRICOS:
+   Detecta obligatoriamente y penaliza el uso de clichés vacíos ("apasionado", "proactivo", "trabajador en equipo dinámico", "motivado", "responsable"). Clasifícalos como "estilo_redacción" y reemplázalos por redacciones contundentes basadas en logros y competencias comprobables.
+4. VERBOS DE ACCIÓN FUERTES Y MÉTODO XYZ:
+   Detecta frases pasivas o débiles como "encargado de", "responsable de", "hice" o viñetas sin impacto. Proporciona en "suggestedText" una versión estructurada bajo el método XYZ de Google con verbos de acción fuertes y métricas cuantificables (%, $, tiempo o volumen).
+5. JERGA TÉCNICA DEL OFICIO:
+   Asegura que el vocabulario y las correcciones utilicen los términos y herramientas exactos del puesto u oficio correspondiente.
 
-Candidate Text to Audit:
+Texto a auditar:
 ` + JSON.stringify(payloadToAudit, null, 2) + `
 
-Instructions:
-- Even when the text has high quality, identify subtle linguistic refinements to elevate the professional prestige.
-- Provide a full analysis breakdown with statistics and inspected sections so the user sees a complete report of the analyzed content.
-- For each specific issue, provide:
-  * "id": unique string (e.g. "err_1")
+Instrucciones:
+- Identifica de forma proactiva oportunidades de mejora lingüística y de impacto profesional.
+- Para cada problema detectado, proporciona:
+  * "id": string único (p. ej. "err_1")
   * "targetSection": "summary" | "experience" | "title"
-  * "expIndex": number or null
-  * "bulletIndex": number or null
-  * "originalText": the exact sentence or bullet text
-  * "suggestedText": the complete improved replacement text ready to apply with 1 click
+  * "expIndex": number o null
+  * "bulletIndex": number o null
+  * "originalText": el texto o fragmento original
+  * "suggestedText": la versión optimizada completa, con verbo de acción fuerte, sin clichés y con estructura de logro XYZ, lista para aplicar con 1 clic
   * "errorType": "ortografía" | "gramática" | "estilo_redacción"
-  * "title": short descriptive title
-  * "explanation": clear explanation in Spanish of why this change improves the CV.
+  * "title": título corto descriptivo (e.g. "Eliminación de cliché genérico", "Verbo de acción fuerte XYZ")
+  * "explanation": explicación ejecutiva en español de por qué este cambio eleva el puntaje ATS y la impresión del reclutador.
 
-Return ONLY a valid JSON object matching this schema:
+Retorna ÚNICAMENTE un objeto JSON válido con este esquema:
 {
   "healthScore": 92,
   "totalIssues": 2,
@@ -457,28 +472,28 @@ Return ONLY a valid JSON object matching this schema:
     "formalityLevel": "Nivel Profesional Alto",
     "orthographyStatus": "Aprobado con sugerencias estilísticas"
   },
-  "generalFeedback": "Diagnóstico Lingüístico: El currículum presenta una redacción clara y profesional...",
+  "generalFeedback": "Diagnóstico Ejecutivo: El currículum presenta solidez estructural...",
   "inspectedSections": [
     {
       "sectionName": "Título Profesional",
       "analyzedText": "...",
       "status": "impecable",
       "wordsCount": 5,
-      "observations": "Título descriptivo y bien delimitado sintácticamente."
+      "observations": "Título descriptivo con jerga técnica precisa."
     },
     {
       "sectionName": "Resumen Ejecutivo",
       "analyzedText": "...",
       "status": "optimizado",
       "wordsCount": 65,
-      "observations": "Párrafo coherente con presencia de métricas y vocabulario técnico adecuado."
+      "observations": "Párrafo contundente sin clichés subjetivos y con métricas comprobables."
     },
     {
       "sectionName": "Experiencia Laboral",
       "analyzedText": "...",
       "status": "optimizado",
       "wordsCount": 110,
-      "observations": "Viñetas estructuradas con verbos de acción en tiempo pasado."
+      "observations": "Viñetas formuladas con verbos de acción en tiempo pasado bajo método XYZ."
     }
   ],
   "issues": [
@@ -500,6 +515,7 @@ Return ONLY a valid JSON object matching this schema:
       model: 'gemini-3.8-flash',
       contents: prompt,
       config: {
+        systemInstruction: SENIOR_HR_SYSTEM_INSTRUCTION,
         responseMimeType: 'application/json',
         temperature: 0.2,
       },
