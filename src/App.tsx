@@ -20,6 +20,9 @@ import { SkillsEditor } from './components/Editor/SkillsEditor';
 import { EducationEditor } from './components/Editor/EducationEditor';
 import { runDeepAIAudit, auditTextSpellingWithAI } from './services/aiService';
 import { TextAuditResult, TextAuditIssue } from './types/ats';
+import { ProfessionalAdviceBanners } from './components/ProfessionalAdviceBanners';
+import { ProfessionalTicker } from './components/ProfessionalTicker';
+import { StarAndAtsBanner } from './components/StarAndAtsBanner';
 import {
   User,
   AlignLeft,
@@ -229,6 +232,39 @@ export default function App() {
     issues.forEach((issue) => handleApplySingleCorrection(issue));
   };
 
+  const handleStepClick = (idx: number) => {
+    if (idx > 0) {
+      if (!currentTarget.title || !currentTarget.title.trim()) {
+        alert('⚠️ ACCESO RESTRINGIDO:\nPrimero debes definir a qué te postulas ("Coloca a qué te postulas") antes de continuar.');
+        setIsTargetModalOpen(true);
+        return;
+      }
+      const { fullName, professionalTitle, email, phone, location } = cvData.contactInfo;
+      if (!fullName?.trim() || !professionalTitle?.trim() || !email?.trim() || !phone?.trim() || !location?.trim()) {
+        alert('⚠️ CAMPOS OBLIGATORIOS PENDIENTES:\nDebes completar todos los campos obligatorios marcados con asterisco rojo (*) en la sección de Datos de Contacto antes de avanzar.');
+        setActiveStep(0);
+        return;
+      }
+    }
+    setActiveStep(idx);
+  };
+
+  const handleNextStep = () => {
+    if (activeStep === 0) {
+      if (!currentTarget.title || !currentTarget.title.trim()) {
+        alert('⚠️ ACCESO RESTRINGIDO:\nPrimero debes definir a qué te postulas ("Coloca a qué te postulas") antes de continuar.');
+        setIsTargetModalOpen(true);
+        return;
+      }
+      const { fullName, professionalTitle, email, phone, location } = cvData.contactInfo;
+      if (!fullName?.trim() || !professionalTitle?.trim() || !email?.trim() || !phone?.trim() || !location?.trim()) {
+        alert('⚠️ CAMPOS OBLIGATORIOS PENDIENTES:\nDebes completar todos los campos obligatorios marcados con asterisco rojo (*) en la sección de Datos de Contacto antes de avanzar.');
+        return;
+      }
+    }
+    setActiveStep((prev) => Math.min(steps.length - 1, prev + 1));
+  };
+
   const steps = [
     { id: 'contact', title: '1. Contacto', icon: User },
     { id: 'summary', title: '2. Resumen', icon: AlignLeft },
@@ -252,6 +288,9 @@ export default function App() {
         onImportJSON={handleImportJSON}
       />
 
+      {/* Professional Ticker Bar */}
+      <ProfessionalTicker />
+
       {/* Main Workspace Layout */}
       <main className="flex-1 max-w-5xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-6">
         {/* Welcome & Motivational Onboarding Banner */}
@@ -260,6 +299,12 @@ export default function App() {
           onOpenTargetModal={() => setIsTargetModalOpen(true)}
           overallScore={atsAnalysis.overallScore}
         />
+
+        {/* Professional Advice & Master Resume / UVP Banners */}
+        <ProfessionalAdviceBanners />
+
+        {/* STAR Method, 2-Page Limit & ATS Parsing Rotating Banner */}
+        <StarAndAtsBanner />
 
         {/* View Mode Switcher & Actions Bar (Clean, uncluttered & responsive) */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 no-print">
@@ -331,7 +376,7 @@ export default function App() {
                     return (
                       <button
                         key={st.id}
-                        onClick={() => setActiveStep(idx)}
+                        onClick={() => handleStepClick(idx)}
                         className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shrink-0 transition-all cursor-pointer ${
                           isActive
                             ? 'bg-blue-900 dark:bg-blue-600 text-white shadow-xs'
@@ -411,7 +456,7 @@ export default function App() {
 
                 {activeStep < steps.length - 1 ? (
                   <button
-                    onClick={() => setActiveStep((prev) => Math.min(steps.length - 1, prev + 1))}
+                    onClick={handleNextStep}
                     className="px-4 py-2 bg-blue-900 hover:bg-blue-950 dark:bg-blue-600 dark:hover:bg-blue-500 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors cursor-pointer"
                   >
                     Siguiente →
@@ -437,10 +482,10 @@ export default function App() {
         </div>
       </main>
 
-      {/* Footer with ATSPASS, Versión 1.6, and Sugerencias button */}
+      {/* Footer with ATSPASS, Versión 1.8, and Sugerencias button */}
       <footer className="w-full border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-4 px-4 text-center no-print mt-auto transition-colors">
         <p className="text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wide">
-          AJRC Servicios | Derechos reservados | Versión 1.6 | Código abierto
+          AJRC Servicios | Derechos reservados | Versión 1.8 | Código abierto
         </p>
         <div className="mt-1.5 flex items-center justify-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
           <Mail className="w-3.5 h-3.5 text-blue-500" />

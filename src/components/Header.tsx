@@ -142,20 +142,16 @@ export const Header: React.FC<HeaderProps> = ({
                   ATS Pro
                 </span>
               </div>
-              {/* Attribution and System Version 1.6 */}
-              <div className="flex items-center gap-1 text-[10px] leading-tight text-slate-300">
-                <span className="font-semibold text-blue-300">AJRC Servicios</span>
-                <span className="text-slate-500">•</span>
-                <span className="bg-slate-800 text-slate-200 px-1 py-0.2 rounded font-mono text-[9px] border border-slate-700">
-                  Versión 1.6
-                </span>
+              {/* Attribution */}
+              <div className="flex items-center gap-1 text-[11px] leading-tight text-slate-300 font-semibold">
+                <span className="text-blue-300">AJRC Servicios</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Right side controls: Sugerencias con contador, Modo Claro/Oscuro y Descargar CV */}
-        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           {/* Botón Pequeño de Sugerencias con Contador de Comunicaciones */}
           <button
             onClick={() => {

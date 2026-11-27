@@ -1,0 +1,15 @@
+# ATSPASS
+
+> ATSPASS es un Optimizador de Currículums y Motor ATS Profesional desarrollado por AJRC Servicios (Versión 1.8). Diseñado para ayudar a candidatos de cualquier oficio, profesión o sector a superar los filtros automáticos de sistemas ATS (Workday, Taleo, Greenhouse, iCIMS, Lever) sin descarte automático.
+
+## Características Principales y Capacidades para IA y Reclutamiento:
+- **Motor ATS de Coincidencia Semántica**: Analiza viñetas, palabras clave técnicas, herramientas y metodologías frente a ofertas laborales reales.
+- **Parsing de Ofertas con IA**: Extrae habilidades técnicas, maquinaria e indicadores clave para cualquier profesión (mecánicos, administrativos, salud, textiles, tecnología, etc.).
+- **Método Google XYZ**: Formulación de logros cuantificables obligatorios (Métrica X, impacto Y, método Z).
+- **Auditoría Lingüística y Ortográfica**: Detecta y corrige errores de acentuación en pretérito (diseñé, lideré, optimicé) y elimina clichés genéricos vacíos ("proactivo", "apasionado").
+- **Exportación Limpia A4**: Genera currículums monocolumna estructurados sin elementos ocultos incompatibles con lectores ATS.
+
+## Enlaces y Contacto:
+- **Autor / Proveedor**: AJRC Servicios
+- **Correo de Soporte y Sugerencias**: AJRC.SERVICIOS@GMAIL.COM
+- **Tecnología**: React, TypeScript, Tailwind CSS, Google GenAI Gemini API, Express.

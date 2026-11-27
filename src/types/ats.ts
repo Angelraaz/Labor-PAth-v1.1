@@ -6,6 +6,7 @@ export interface ContactInfo {
   location: string;
   linkedin: string;
   portfolioOrGithub?: string;
+  photoUrl?: string;
 }
 
 export interface ExperienceItem {

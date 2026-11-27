@@ -128,14 +128,24 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
 
       {/* Actual Printable ATS Resume Container */}
       <div className="resume-printable-document bg-white border border-slate-300 rounded-xl shadow-lg p-4 sm:p-8 md:p-12 max-w-4xl mx-auto font-sans text-slate-900 leading-normal selection:bg-blue-100 overflow-x-auto w-full">
-        {/* Header / Contact Info */}
-        <div className="border-b-2 border-slate-900 pb-4 mb-5 text-center sm:text-left">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-slate-950 uppercase break-words">
-            {cvData.contactInfo.fullName || 'TU NOMBRE COMPLETO'}
-          </h1>
-          <p className="text-sm sm:text-base font-bold text-slate-700 mt-1 uppercase tracking-wide">
-            {cvData.contactInfo.professionalTitle || 'TÍTULO PROFESIONAL EJECUTIVO'}
-          </p>
+        {/* Header / Contact Info with optional Photo */}
+        <div className="border-b-2 border-slate-900 pb-4 mb-5 flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 text-center sm:text-left">
+          {cvData.contactInfo.photoUrl && (
+            <div className="shrink-0 order-first sm:order-last">
+              <img
+                src={cvData.contactInfo.photoUrl}
+                alt={cvData.contactInfo.fullName || 'Foto de perfil'}
+                className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg border-2 border-slate-900 shadow-sm"
+              />
+            </div>
+          )}
+          <div className="flex-1 min-w-0">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-slate-950 uppercase break-words">
+              {cvData.contactInfo.fullName || 'TU NOMBRE COMPLETO'}
+            </h1>
+            <p className="text-sm sm:text-base font-bold text-slate-700 mt-1 uppercase tracking-wide">
+              {cvData.contactInfo.professionalTitle || 'TÍTULO PROFESIONAL EJECUTIVO'}
+            </p>
 
           <div className="mt-2 text-xs text-slate-600 flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-1">
             {cvData.contactInfo.email && (
@@ -165,6 +175,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({
                 <span>{cvData.contactInfo.portfolioOrGithub}</span>
               </>
             )}
+          </div>
           </div>
         </div>
 
